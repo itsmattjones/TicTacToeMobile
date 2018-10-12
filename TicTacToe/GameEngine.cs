@@ -6,6 +6,14 @@ namespace TicTacToe
 {
     public class GameEngine
     {
+        /// <summary>
+        /// Takes the current player's turn.
+        /// </summary>
+        /// <returns>The updated game model.</returns>
+        /// <param name="gameModel">Game model.</param>
+        /// <param name="cellId">Cell identifier.</param>
+        /// <param name="gameIsWon">If set to true game is won.</param>
+        /// <param name="gameIsDraw">If set to true game is draw.</param>
         public GameModel TakePlayerTurn(GameModel gameModel, string cellId, out bool gameIsWon, out bool gameIsDraw)
         {
             bool result = int.TryParse(cellId, out int CellId);
@@ -39,6 +47,13 @@ namespace TicTacToe
             return gameModel;
         }
 
+        /// <summary>
+        /// Takes the AI players turn.
+        /// </summary>
+        /// <returns>The updated model.</returns>
+        /// <param name="gameModel">Game model.</param>
+        /// <param name="gameIsWon">If set to true game is won.</param>
+        /// <param name="gameIsDraw">If set to true game is draw.</param>
         public GameModel TakeAITurn(GameModel gameModel, out bool gameIsWon, out bool gameIsDraw)
         {
             gameIsWon = false;
@@ -87,7 +102,11 @@ namespace TicTacToe
             return gameModel;
         }
 
-
+        /// <summary>
+        /// Choose a cell under Easy difficulty.
+        /// </summary>
+        /// <returns>The chosen cell to select.</returns>
+        /// <param name="gameModel">Game model.</param>
         public int EasyAITurn(GameModel gameModel)
         {
             foreach (var cell in gameModel.Board)
@@ -98,6 +117,11 @@ namespace TicTacToe
             return -1;
         }
 
+        /// <summary>
+        /// Choose a cell under Medium difficulty.
+        /// </summary>
+        /// <returns>The chosen cell to select.</returns>
+        /// <param name="gameModel">Game model.</param>
         public int MediumAITurn(GameModel gameModel)
         {
             Dictionary<List<int>, int> winningCombinations = new Dictionary<List<int>, int>
@@ -145,11 +169,22 @@ namespace TicTacToe
             return -1;
         }
 
+        /// <summary>
+        /// Checks whether the player has won the game.
+        /// </summary>
+        /// <returns>True if the game's won, otherwise false.</returns>
+        /// <param name="board">The game board.</param>
+        /// <param name="player">The player to check.</param>
         private bool GameIsWon(List<CellModel> board, IPlayerModel player)
         {
             return CheckForVictory(board, player) ? true : false;
         }
 
+        /// <summary>
+        /// Checks if the game is a draw
+        /// </summary>
+        /// <returns>True if the game's a draw, otherwise false.</returns>
+        /// <param name="board">The game board.</param>
         private bool GameIsDraw(List<CellModel> board)
         {
             return CheckBoardFull(board) ? true : false;
@@ -157,11 +192,21 @@ namespace TicTacToe
 
         #region Helper Methods
 
+        /// <summary>
+        /// Gets the current player whose turn it is.
+        /// </summary>
+        /// <returns>The player.</returns>
+        /// <param name="gameModel">Game model.</param>
         public IPlayerModel GetTurnPlayer(GameModel gameModel)
         {
             return gameModel.PlayerOne.IsPlayerTurn ? gameModel.PlayerOne : gameModel.PlayerTwo;
         }
 
+        /// <summary>
+        /// Checks if the board is full.
+        /// </summary>
+        /// <returns>True if the board is full, otherwise false.</returns>
+        /// <param name="board">The game board.</param>
         private bool CheckBoardFull(List<CellModel> board)
         {
             foreach (var cell in board)
@@ -173,6 +218,12 @@ namespace TicTacToe
             return true;
         }
 
+        /// <summary>
+        /// Checks for victory against solutions.
+        /// </summary>
+        /// <returns>True if the player has won, otherwise false.</returns>
+        /// <param name="board">The game board.</param>
+        /// <param name="player">Player to check.</param>
         private bool CheckForVictory(List<CellModel> board, IPlayerModel player)
         {
             var pAvatar = player.PlayerAvatar;
@@ -210,6 +261,13 @@ namespace TicTacToe
             return false;
         }
 
+        /// <summary>
+        /// Checks if the cell on the board matches the players after.
+        /// Which will determine whether the player has taken the cell.
+        /// </summary>
+        /// <returns>True if they've taken it, otherwise false.</returns>
+        /// <param name="avatar">The player's avatar</param>
+        /// <param name="boardCell">Board cell.</param>
         private bool IsBoardMatch(int avatar, CellModel boardCell)
         {
             var cellState = boardCell.CellState;
