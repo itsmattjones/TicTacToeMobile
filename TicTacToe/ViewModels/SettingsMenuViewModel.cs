@@ -17,6 +17,9 @@ namespace TicTacToe.ViewModels
         public Command ChangeDifficultyCommand { get; set; }
         public Command MainMenuCommand { get; set; }
 
+        /// <summary>
+        /// The chosen game difficulty.
+        /// </summary>
         public AIDifficulty ChosenDifficulty
         {
             get { return _chosenDifficulty; }
@@ -29,6 +32,9 @@ namespace TicTacToe.ViewModels
 
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the SettingsMenuViewModel class.
+        /// </summary>
         public SettingsMenuViewModel()
         {
             ChangeDifficultyCommand = new Command<string>(ChangeDifficulty);
@@ -38,6 +44,10 @@ namespace TicTacToe.ViewModels
 
         #region Helper Methods
 
+        /// <summary>
+        /// Changes the difficulty.
+        /// </summary>
+        /// <param name="difficultyType">Difficulty.</param>
         private void ChangeDifficulty(string difficultyType)
         {
             if (string.IsNullOrEmpty(difficultyType))
@@ -56,6 +66,9 @@ namespace TicTacToe.ViewModels
             ChosenDifficulty = Program.aiDifficulty;
         }
 
+        /// <summary>
+        /// Shows the main menu.
+        /// </summary>
         private void ShowMainMenu()
         {
             Program.ReturnToMainMenu();

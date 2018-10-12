@@ -9,6 +9,9 @@ namespace TicTacToe
     {
         public GameEngine gameEngine;
 
+        /// <summary>
+        /// Creates a new multiplayer game.
+        /// </summary>
         public void CreateMultiplayerGame()
         {
             // Initalize Game Engine.
@@ -31,6 +34,9 @@ namespace TicTacToe
             Xamarin.Forms.Application.Current.MainPage = new GameScreen(gameScreenViewModel);
         }
 
+        /// <summary>
+        /// Creates a new singleplayer game.
+        /// </summary>
         public void CreateSingleplayerGame()
         {
             // Initalize Game Engine.

@@ -14,6 +14,9 @@ namespace TicTacToe.ViewModels
 
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the MainMenuViewModel class.
+        /// </summary>
         public MainMenuViewModel()
         {
             SingleplayerCmd = new Command(CreateSingleplayer);
@@ -23,14 +26,25 @@ namespace TicTacToe.ViewModels
 
         #region Helper Methods
 
+        /// <summary>
+        /// Creates a singleplayer game.
+        /// </summary>
         private void CreateSingleplayer() 
         {
             Program.gameManager.CreateSingleplayerGame();
         }
+
+        /// <summary>
+        /// Creates a multiplayer game.
+        /// </summary>
         private void CreateMultiplayer() 
         { 
             Program.gameManager.CreateMultiplayerGame();
         }
+
+        /// <summary>
+        /// Shows the settings menu.
+        /// </summary>
         private void CreateSettings() 
         {
             Program.ShowSettingsMenu();

@@ -4,6 +4,9 @@ using Xamarin.Forms;
 
 namespace TicTacToe.Converters
 {
+    /// <summary>
+    /// Converts the text shown on cells on the game board.
+    /// </summary>
     public class BoardCellTextConverter : IValueConverter
     {
         readonly string p1 = "X";
@@ -30,6 +33,9 @@ namespace TicTacToe.Converters
         }
     }
 
+    /// <summary>
+    /// Converts the colour of the cells on the game board.
+    /// </summary>
     public class BoardCellColourConverter : IValueConverter
     {
         readonly Color p1 = Color.FromHex("#33cc33");
@@ -57,6 +63,10 @@ namespace TicTacToe.Converters
         }
     }
 
+    /// <summary>
+    /// Converts the player ID to the player name during the
+    /// end game dialog sequence.
+    /// </summary>
     public class EndGameDialogWinner : IValueConverter
     {
         readonly string PlayerOneText = "PLAYER 1";

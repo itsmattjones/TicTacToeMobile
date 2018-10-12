@@ -1,7 +1,7 @@
 ﻿namespace TicTacToe.Models
 {
     public class AIPlayerModel : IPlayerModel
-    {
+	{
         public int PlayerId { get; set; }
 
         public bool IsPlayerTurn { get; set; }

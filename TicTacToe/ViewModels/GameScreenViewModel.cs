@@ -19,6 +19,13 @@ namespace TicTacToe.ViewModels
 
         #region Properties
 
+        public Command SelectCellCommand { get; set; }
+        public Command PlayAgainCommand { get; set; }
+        public Command MainMenuCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the game model.
+        /// </summary>
         public GameModel GameModel
         {
             get { return _gameModel; }
@@ -29,6 +36,9 @@ namespace TicTacToe.ViewModels
             }
         }
 
+        /// <summary>
+        /// Game won state.
+        /// </summary>
         public bool IsGameWon 
         {
             get { return _isGameWon; }
@@ -39,6 +49,9 @@ namespace TicTacToe.ViewModels
             }
         }
 
+        /// <summary>
+        /// Game draw state.
+        /// </summary>
         public bool IsGameDraw
         {
             get { return _isGameDraw; }
@@ -49,6 +62,9 @@ namespace TicTacToe.ViewModels
             }
         }
 
+        /// <summary>
+        /// Whether the board buttons are enabled/disabled.
+        /// </summary>
         public bool BoardButtonsEnabled
         {
             get { return _boardButtonsEnabled; }
@@ -59,6 +75,9 @@ namespace TicTacToe.ViewModels
             }
         }
 
+        /// <summary>
+        /// The PlayerID of the game winner.
+        /// </summary>
         public int GameWinner
         {
             get { return _gameWinner; }
@@ -69,12 +88,11 @@ namespace TicTacToe.ViewModels
             }
         }
 
-        public Command SelectCellCommand { get; set; }
-        public Command PlayAgainCommand { get; set; }
-        public Command MainMenuCommand { get; set; }
-
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the GameScreenViewModel class.
+        /// </summary>
         public GameScreenViewModel()
         {
             SelectCellCommand = new Command<string>(SelectCell);
@@ -85,6 +103,10 @@ namespace TicTacToe.ViewModels
 
         #region Helper Methods
 
+        /// <summary>
+        /// Selects the cell for a player.
+        /// </summary>
+        /// <param name="cellId">Cell identifier.</param>
         private void SelectCell(string cellId)
         {
             GameModel = Program.gameManager.gameEngine.TakePlayerTurn(GameModel, cellId, out bool isGameWon, out bool isGameDraw);
@@ -106,6 +128,9 @@ namespace TicTacToe.ViewModels
                 SelectCellAI();
         }
 
+        /// <summary>
+        /// Selects the cell for a AI player.
+        /// </summary>
         public void SelectCellAI()
         {
             GameModel = Program.gameManager.gameEngine.TakeAITurn(GameModel, out bool isGameWonAI, out bool isGameDrawAI);
@@ -120,14 +145,19 @@ namespace TicTacToe.ViewModels
             BoardButtonsEnabled = !(IsGameWon || IsGameDraw);
         }
 
+        /// <summary>
+        /// Opens the main menu.
+        /// </summary>
         private void OpenMainMenu()
         {
             Program.ReturnToMainMenu();
         }
 
+        /// <summary>
+        /// Starts a new game, the same as the current.
+        /// </summary>
         private void PlayAgain()
         {
-            // If a AI player exists, the gamemode must be singelplayer.
             if(GameModel.PlayerOne.PlayerType == PlayerType.AI || GameModel.PlayerTwo.PlayerType == PlayerType.AI)
             {
                 Program.gameManager.CreateSingleplayerGame();
