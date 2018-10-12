@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TicTacToe.Views"
+             xmlns:converters="clr-namespace:TicTacToe.Converters"
+             xmlns:assets="clr-namespace:TicTacToe.Assests"
+             x:Class="TicTacToe.Views.GameScreen"
+             NavigationPage.HasNavigationBar="False">
+    
+    <ContentPage.Resources>
+        <converters:BoardCellTextConverter x:Key="CellTextConverter"/>
+        <converters:BoardCellColourConverter x:Key="CellColourConverter"/>
+        <converters:EndGameDialogWinner x:Key="EndGameDialogWinner"/>
+        
+        <Style TargetType="Button" x:Key="BoardButton">
+            <Setter Property="FontSize" Value="64"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+        </Style>
+        
+        <Style TargetType="Frame" x:Key="EndGameDialogs">
+            <Setter Property="OutlineColor" Value="Silver"/>
+            <Setter Property="BackgroundColor" Value="#5b9aff"/>
+            <Setter Property="Opacity" Value="0.75"/>
+            <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+            <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        </Style>
+        <Style TargetType="StackLayout" x:Key="EndGameDialogsStackLayout">
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="Opacity" Value="1"/>
+        </Style>
+        <Style TargetType="Label" x:Key="EndGameDialogsText">
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize" Value="42"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+        </Style>
+        <Style TargetType="Button" x:Key="EndGameDialogsButtons">
+            <Setter Property="HeightRequest" Value="70"/>
+            <Setter Property="WidthRequest" Value="200"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="BackgroundColor" Value="#4c4c4c"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="BorderColor" Value="#dbdbdb"/>
+            <Setter Property="BorderRadius" Value="15"/>
+            <Setter Property="BorderWidth" Value="2"/>
+            <Setter Property="Margin" Value="20,5,20,5"/>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <!-- TicTacToe game board. -->
+            <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource BoardButton}"
+                    BackgroundColor="{Binding GameModel.Board[0].CellState, Converter={StaticResource CellColourConverter}}"
+                    Text="{Binding GameModel.Board[0].CellState, Converter={StaticResource CellTextConverter}}" 
+                    Command="{Binding SelectCellCommand}" CommandParameter="0"
+                    IsEnabled="{Binding BoardButtonsEnabled}" />
+            
+            <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource BoardButton}"
+                    BackgroundColor="{Binding GameModel.Board[1].CellState, Converter={StaticResource CellColourConverter}}"
+                    Text="{Binding GameModel.Board[1].CellState, Converter={StaticResource CellTextConverter}}" 
+                    Command="{Binding SelectCellCommand}" CommandParameter="1"
+                    IsEnabled="{Binding BoardButtonsEnabled}" />
+            
+            <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource BoardButton}"
+                    BackgroundColor="{Binding GameModel.Board[2].CellState, Converter={StaticResource CellColourConverter}}"
+                    Text="{Binding GameModel.Board[2].CellState, Converter={StaticResource CellTextConverter}}" 
+                    Command="{Binding SelectCellCommand}" CommandParameter="2"
+                    IsEnabled="{Binding BoardButtonsEnabled}" />
+            
+            <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource BoardButton}"
+                    BackgroundColor="{Binding GameModel.Board[3].CellState, Converter={StaticResource CellColourConverter}}"
+                    Text="{Binding GameModel.Board[3].CellState, Converter={StaticResource CellTextConverter}}" 
+                    Command="{Binding SelectCellCommand}" CommandParameter="3"
+                    IsEnabled="{Binding BoardButtonsEnabled}" />
+
+            <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource BoardButton}"
+                    BackgroundColor="{Binding GameModel.Board[4].CellState, Converter={StaticResource CellColourConverter}}"
+                    Text="{Binding GameModel.Board[4].CellState, Converter={StaticResource CellTextConverter}}" 
+                    Command="{Binding SelectCellCommand}" CommandParameter="4"
+                    IsEnabled="{Binding BoardButtonsEnabled}" />
+            
+            <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource BoardButton}"
+                    BackgroundColor="{Binding GameModel.Board[5].CellState, Converter={StaticResource CellColourConverter}}"
+                    Text="{Binding GameModel.Board[5].CellState, Converter={StaticResource CellTextConverter}}" 
+                    Command="{Binding SelectCellCommand}" CommandParameter="5"
+                    IsEnabled="{Binding BoardButtonsEnabled}" />
+            
+            <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource BoardButton}"
+                    BackgroundColor="{Binding GameModel.Board[6].CellState, Converter={StaticResource CellColourConverter}}"
+                    Text="{Binding GameModel.Board[6].CellState, Converter={StaticResource CellTextConverter}}" 
+                    Command="{Binding SelectCellCommand}" CommandParameter="6"
+                    IsEnabled="{Binding BoardButtonsEnabled}" />
+            
+            <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource BoardButton}"
+                    BackgroundColor="{Binding GameModel.Board[7].CellState, Converter={StaticResource CellColourConverter}}"
+                    Text="{Binding GameModel.Board[7].CellState, Converter={StaticResource CellTextConverter}}" 
+                    Command="{Binding SelectCellCommand}" CommandParameter="7"
+                    IsEnabled="{Binding BoardButtonsEnabled}" />
+
+            <Button Grid.Row="2" Grid.Column="2" Style="{StaticResource BoardButton}"
+                    BackgroundColor="{Binding GameModel.Board[8].CellState, Converter={StaticResource CellColourConverter}}"
+                    Text="{Binding GameModel.Board[8].CellState, Converter={StaticResource CellTextConverter}}" 
+                    Command="{Binding SelectCellCommand}" CommandParameter="8"
+                    IsEnabled="{Binding BoardButtonsEnabled}" />
+            
+            
+            <!-- Basic dialogs for when a game is won etc. -->
+            <Frame Grid.RowSpan="3" Grid.ColumnSpan="3" IsVisible="{Binding IsGameWon}" Style="{StaticResource EndGameDialogs}">
+                <StackLayout Style="{StaticResource EndGameDialogsStackLayout}">
+                    <Image Source="winner.png"/>
+                    <Label Text="{Binding GameWinner, Converter={StaticResource EndGameDialogWinner}}" Style="{StaticResource EndGameDialogsText}" />
+                    <Button Text="Play Again" Style="{StaticResource EndGameDialogsButtons}" Command="{Binding PlayAgainCommand}"/>
+                    <Button Text="Main Menu" Style="{StaticResource EndGameDialogsButtons}" Command="{Binding MainMenuCommand}"/>
+                </StackLayout>
+            </Frame>
+            <Frame Grid.RowSpan="3" Grid.ColumnSpan="3" IsVisible="{Binding IsGameDraw}" Style="{StaticResource EndGameDialogs}">
+                <StackLayout Style="{StaticResource EndGameDialogsStackLayout}">
+                    <Image Source="draw.png"/>
+                    <Button Text="Play Again" Style="{StaticResource EndGameDialogsButtons}" Command="{Binding PlayAgainCommand}"/>
+                    <Button Text="Main Menu" Style="{StaticResource EndGameDialogsButtons}" Command="{Binding MainMenuCommand}"/>
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
