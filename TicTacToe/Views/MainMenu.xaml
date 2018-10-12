@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TicTacToe.Views.MainMenu"
+             NavigationPage.HasNavigationBar="False">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="MenuButton" TargetType="Button">
+                <Setter Property="Padding" Value="0,0,0,0"/>
+                <Setter Property="Margin" Value="10,0,10,0"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="BackgroundColor" Value="#4c4c4c"/>
+                <Setter Property="BorderColor" Value="#dbdbdb"/>
+                <Setter Property="BorderRadius" Value="15"/>
+                <Setter Property="BorderWidth" Value="2"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid BackgroundColor="#5ed177">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60*"/>
+                <RowDefinition Height="60*"/>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0">
+                <Image VerticalOptions="End" HorizontalOptions="Center" Source="tictactoe.png"/>
+            </Grid>
+            
+            <Grid Grid.Row="1" Margin="0,0,0,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Grid Grid.Row="1">
+                    <Button Text="Singleplayer" Style="{StaticResource MenuButton}" Command="{Binding SingleplayerCmd}"/>
+                </Grid>
+                
+                <Grid Grid.Row="2">
+                    <Button Text="Multiplayer" Style="{StaticResource MenuButton}" Command="{Binding MultiplayerCmd}"/>
+                </Grid>
+                
+                <Grid Grid.Row="3">
+                    <Button Text="Settings" Style="{StaticResource MenuButton}" Command="{Binding SettingsCmd}"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

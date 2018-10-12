@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:converters="clr-namespace:TicTacToe.Converters"
+             x:Class="TicTacToe.Views.SettingsMenu"
+             NavigationPage.HasNavigationBar="False">
+    
+    <ContentPage.Resources>
+        <converters:EasyButtonColourConverter x:Key="EasyButtonColourConverter" />
+        <converters:MediumButtonColourConverter x:Key="MediumButtonColourConverter" />
+        <converters:HardButtonColourConverter x:Key="HardButtonColourConverter" />
+        
+        <ResourceDictionary>
+            <Style x:Key="Title" TargetType="Label">
+                <Setter Property="FontSize" Value="48"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="SubTitle" TargetType="Label">
+                <Setter Property="FontSize" Value="35"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="SettingsButton" TargetType="Button">
+                 <Setter Property="Padding" Value="0,0,0,0"/>
+                 <Setter Property="Margin" Value="10,0,10,0"/>
+                 <Setter Property="FontSize" Value="22"/>
+                 <Setter Property="TextColor" Value="White"/>
+                 <Setter Property="BackgroundColor" Value="#4c4c4c"/>
+                 <Setter Property="BorderColor" Value="#dbdbdb"/>
+                 <Setter Property="BorderRadius" Value="15"/>
+                 <Setter Property="BorderWidth" Value="2"/>
+                 <Setter Property="FontFamily" Value="Arial"/>
+             </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid BackgroundColor="#5ed177">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="15*"/>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0">
+                <Label Text="Settings" Style="{StaticResource Title}"/>
+            </Grid>
+            
+            <Grid Grid.Row="1">
+                <Label Text="Difficulty" Style="{StaticResource SubTitle}"/>
+            </Grid>
+            
+            <Grid Grid.Row="2">
+                <Button Text="Easy" Style="{StaticResource SettingsButton}" Command="{Binding ChangeDifficultyCommand}" CommandParameter="easy"
+                        BackgroundColor="{Binding ChosenDifficulty, Converter={StaticResource EasyButtonColourConverter}}"/>
+            </Grid>
+            
+            <Grid Grid.Row="3">
+                <Button Text="Medium" Style="{StaticResource SettingsButton}" Command="{Binding ChangeDifficultyCommand}" CommandParameter="medium"
+                        BackgroundColor="{Binding ChosenDifficulty, Converter={StaticResource MediumButtonColourConverter}}"/>
+            </Grid>
+            
+            <Grid Grid.Row="4">
+                <Button Text="Hard" Style="{StaticResource SettingsButton}" IsEnabled="false" Command="{Binding ChangeDifficultyCommand}" CommandParameter="hard"
+                        BackgroundColor="{Binding ChosenDifficulty, Converter={StaticResource HardButtonColourConverter}}"/>
+            </Grid>
+            
+            <Grid Grid.Row="5">
+                <Button Text="Main Menu" Style="{StaticResource SettingsButton}" Command="{Binding MainMenuCommand}"/>
+            </Grid>
+       </Grid>
+    </ContentPage.Content>
+</ContentPage>
