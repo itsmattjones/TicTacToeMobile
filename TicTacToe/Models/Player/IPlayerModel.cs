@@ -16,6 +16,10 @@
 
     public interface IPlayerModel
     {
+        /// <summary>
+        /// Gets or sets the player identifier.
+        /// </summary>
+        /// <value>The player identifier.</value>
         int PlayerId { get; set; }
 
         /// <summary>
@@ -36,6 +40,11 @@
         /// <value>The player avatar.</value>
         int PlayerAvatar { get; set; }
 
+        /// <summary>
+        /// Gets or sets the difficulty of the player if the player
+        /// is an AI player.
+        /// </summary>
+        /// <value>The AI difficulty.</value>
         AIDifficulty Difficulty { get; set; }
     }
 }

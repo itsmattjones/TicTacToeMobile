@@ -5,6 +5,10 @@ using Xamarin.Forms;
 
 namespace TicTacToe.Converters
 {
+    /// <summary>
+    /// Converts the colour of the easy difficulty button
+    /// depending on whether it's selected or not.
+    /// </summary>
     public class EasyButtonColourConverter : IValueConverter
     {
         public Color Selected = Color.FromHex("#286800");
@@ -27,6 +31,10 @@ namespace TicTacToe.Converters
         }
     }
 
+    /// <summary>
+    /// Converts the colour of the medium difficulty button
+    /// depending on whether it's selected or not.
+    /// </summary>
     public class MediumButtonColourConverter : IValueConverter
     {
         public Color Selected = Color.FromHex("#286800");
@@ -49,6 +57,10 @@ namespace TicTacToe.Converters
         }
     }
 
+    /// <summary>
+    /// Converts the colour of the hard difficulty button
+    /// depending on whether it's selected or not.
+    /// </summary>
     public class HardButtonColourConverter : IValueConverter
     {
         public Color Selected = Color.FromHex("#286800");
