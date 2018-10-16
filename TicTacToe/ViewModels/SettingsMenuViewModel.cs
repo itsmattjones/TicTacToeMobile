@@ -61,6 +61,9 @@ namespace TicTacToe.ViewModels
                 case "medium":
                     Program.aiDifficulty = AIDifficulty.Medium;
                     break;
+                case "hard":
+                    Program.aiDifficulty = AIDifficulty.Hard;
+                    break;
             }
 
             ChosenDifficulty = Program.aiDifficulty;
