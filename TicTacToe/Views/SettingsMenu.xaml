@@ -66,7 +66,7 @@
             </Grid>
             
             <Grid Grid.Row="4">
-                <Button Text="Hard" Style="{StaticResource SettingsButton}" IsEnabled="false" Command="{Binding ChangeDifficultyCommand}" CommandParameter="hard"
+                <Button Text="Hard" Style="{StaticResource SettingsButton}" Command="{Binding ChangeDifficultyCommand}" CommandParameter="hard"
                         BackgroundColor="{Binding ChosenDifficulty, Converter={StaticResource HardButtonColourConverter}}"/>
             </Grid>
             
