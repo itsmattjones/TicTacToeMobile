@@ -73,8 +73,9 @@ namespace TicTacToe
                     cellId = MediumAITurn(gameModel);
                     break;
                 case AIDifficulty.Hard:
-                    // fall through.
-                default: // Medium
+                    cellId = HardAITurn(gameModel);
+                    break;
+                default: // Default to medium
                     cellId = MediumAITurn(gameModel);
                     break;
             }
@@ -124,49 +125,83 @@ namespace TicTacToe
         /// <param name="gameModel">Game model.</param>
         public int MediumAITurn(GameModel gameModel)
         {
-            Dictionary<List<int>, int> winningCombinations = new Dictionary<List<int>, int>
-            {
-                { new List<int> { 0, 1, 2 }, 0 }, { new List<int> { 3, 4, 5 }, 0 }, { new List<int> { 6, 7, 8 }, 0 },
-                { new List<int> { 0, 3, 6 }, 0 }, { new List<int> { 1, 4, 7 }, 0 }, { new List<int> { 2, 5, 8 }, 0 },
-                { new List<int> { 0, 4, 8 }, 0 }, { new List<int> { 2, 4, 6 }, 0 }
-            };
-
             IPlayerModel otherPlayer = gameModel.PlayerOne.IsPlayerTurn ? gameModel.PlayerTwo : gameModel.PlayerOne;
 
-            // Create a new dictionary containing the solution, and how many cells of the solution is taken by the other player.
-            Dictionary<List<int>, int> winningCombinationsNew = new Dictionary<List<int>, int>();
-            foreach (var solution in winningCombinations)
+            var solutions = GenerateWinningCombinationsList();
+            foreach (var solution in solutions)
             {
-                var cellTakenCount = 0;
+                var solutionCellIds = solution.GetRange(2, 3);
 
-                foreach(var cellId in solution.Key)
+                foreach(var cellId in solutionCellIds)
                 {
                     if (gameModel.Board[cellId].CellState == otherPlayer.PlayerAvatar)
-                        cellTakenCount++;
+                        solutions[solutions.IndexOf(solution)][1]++;
                 }
-
-                winningCombinationsNew.Add(solution.Key, cellTakenCount);
             }
 
-            foreach(var solution in winningCombinationsNew.OrderByDescending(key => key.Value))
+            // Attempt to block.
+            foreach (var solution in solutions.OrderByDescending(x => x[1]))
             {
-                // Block the solution
-                foreach (var cellid in solution.Key)
+                foreach (var cellid in solution.GetRange(2, 3))
                 {
                     if (gameModel.Board[cellid].CellState == 0)
                         return cellid;
                 }
             }
 
+            // If all fails, revert to easier difficulty.
+            return EasyAITurn(gameModel);
+        }
 
-            // If it fails to block any solutions just pick a cell to take.
-            foreach (var cell in gameModel.Board)
+        /// <summary>
+        /// Choose a cell under Hard difficulty.
+        /// </summary>
+        /// <returns>The chosen cell to select.</returns>
+        /// <param name="gameModel">Game model.</param>
+        public int HardAITurn(GameModel gameModel)
+        {
+            IPlayerModel normalPlayer = gameModel.PlayerOne.IsPlayerTurn ? gameModel.PlayerTwo : gameModel.PlayerOne;
+            IPlayerModel AIPlayer = gameModel.PlayerOne.IsPlayerTurn ? gameModel.PlayerOne : gameModel.PlayerTwo;
+
+            var solutionsNormalPlayer = GenerateWinningCombinationsList();
+            var solutionsAIPlayer = GenerateWinningCombinationsList();
+            for (var i = 0; i < solutionsNormalPlayer.Count; i++)
             {
-                if (cell.CellState == 0)
-                    return gameModel.Board.IndexOf(cell);
+                var solutionCellIds = solutionsNormalPlayer[i].GetRange(2, 3);
+
+                foreach (var cellId in solutionCellIds)
+                {
+                    if (gameModel.Board[cellId].CellState == normalPlayer.PlayerAvatar)
+                        solutionsNormalPlayer[i][1]++;
+
+                    if (gameModel.Board[cellId].CellState == AIPlayer.PlayerAvatar)
+                        solutionsAIPlayer[i][1]++;
+                }
             }
 
-            return -1;
+            // Attempt to win.
+            var test = solutionsAIPlayer.Where(x => x[1] > 1);
+            foreach (var solution in solutionsAIPlayer.Where(x => x[1] > 1))
+            {
+                foreach (var cellid in solution.GetRange(2, 3))
+                {
+                    if (gameModel.Board[cellid].CellState == 0)
+                        return cellid;
+                }
+            }
+
+            // Can't win? Attempt to block.
+            foreach (var solution in solutionsNormalPlayer.OrderByDescending(x => x[1]))
+            {
+                foreach(var cellid in solution.GetRange(2, 3))
+                {
+                    if (gameModel.Board[cellid].CellState == 0)
+                        return cellid;
+                }
+            }
+
+            // If all fails, revert to easier difficulty.
+            return MediumAITurn(gameModel);
         }
 
         /// <summary>
@@ -259,6 +294,20 @@ namespace TicTacToe
 
 
             return false;
+        }
+
+        /// <summary>
+        /// Generates the winning combinations list.
+        /// </summary>
+        /// <returns>The winning combinations list.</returns>
+        private List<List<int>> GenerateWinningCombinationsList()
+        {
+            return new List<List<int>>
+            {
+                new List<int> { 3, 0, 0, 3, 6 }, new List<int> { 3, 0, 1, 4, 7 }, new List<int> { 3, 0, 2, 5, 8 },
+                new List<int> { 2, 0, 0, 1, 2 }, new List<int> { 2, 0, 3, 4, 5 }, new List<int> { 2, 0, 6, 7, 8 },
+                new List<int> { 1, 0, 0, 4, 8 }, new List<int> { 1, 0, 2, 4, 6 }
+            };
         }
 
         /// <summary>
