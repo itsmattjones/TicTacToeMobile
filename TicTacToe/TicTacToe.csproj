@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <ReleaseVersion>1.0</ReleaseVersion>
+    <ReleaseVersion>1.1</ReleaseVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,6 +24,7 @@
     <Compile Remove="Commands\RelayCommand.cs" />
     <Compile Remove="Views\MultiplayerWinnerDialog.xaml.cs" />
     <Compile Remove="Assets\GameScreenStyle.xaml.cs" />
+    <Compile Remove="Models\SolutionModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Android">
