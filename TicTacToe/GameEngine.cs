@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Models;
 
@@ -127,21 +128,13 @@ namespace TicTacToe
         {
             IPlayerModel otherPlayer = gameModel.PlayerOne.IsPlayerTurn ? gameModel.PlayerTwo : gameModel.PlayerOne;
 
-            var solutions = GenerateWinningCombinationsList();
-            foreach (var solution in solutions)
-            {
-                var solutionCellIds = solution.GetRange(2, 3);
+            var solutions = GetPopulatedWinningCombinations(gameModel, otherPlayer.PlayerAvatar);
 
-                foreach(var cellId in solutionCellIds)
-                {
-                    if (gameModel.Board[cellId].CellState == otherPlayer.PlayerAvatar)
-                        solutions[solutions.IndexOf(solution)][1]++;
-                }
-            }
-
-            // Attempt to block.
-            foreach (var solution in solutions.OrderByDescending(x => x[1]))
+            // Attempt to block solutions with 2 cells taken by the other player.
+            var possibleSolutions = solutions.OrderByDescending(x => x[1]);
+            if (possibleSolutions.Any(x => x[1] > 1)) 
             {
+                var solution = possibleSolutions.Where(x => x[1] > 1).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
                 foreach (var cellid in solution.GetRange(2, 3))
                 {
                     if (gameModel.Board[cellid].CellState == 0)
@@ -149,7 +142,23 @@ namespace TicTacToe
                 }
             }
 
-            // If all fails, revert to easier difficulty.
+            // Attempt to block solutions with 1 cell taken by the other player.
+            if(possibleSolutions.Any(x => x[1] > 0))
+            {
+                var solution = possibleSolutions.Where(x => x[1] > 0).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+                var untakenCellIds = new List<int>();
+
+                foreach (var cellid in solution.GetRange(2, 3))
+                {
+                    if (gameModel.Board[cellid].CellState == 0)
+                        untakenCellIds.Add(cellid);
+                }
+
+                if (untakenCellIds.Count > 0)
+                    return untakenCellIds.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+            }
+
+            // If all fails, revert to previous difficulty.
             return EasyAITurn(gameModel);
         }
 
@@ -160,47 +169,25 @@ namespace TicTacToe
         /// <param name="gameModel">Game model.</param>
         public int HardAITurn(GameModel gameModel)
         {
-            IPlayerModel normalPlayer = gameModel.PlayerOne.IsPlayerTurn ? gameModel.PlayerTwo : gameModel.PlayerOne;
             IPlayerModel AIPlayer = gameModel.PlayerOne.IsPlayerTurn ? gameModel.PlayerOne : gameModel.PlayerTwo;
 
-            var solutionsNormalPlayer = GenerateWinningCombinationsList();
-            var solutionsAIPlayer = GenerateWinningCombinationsList();
-            for (var i = 0; i < solutionsNormalPlayer.Count; i++)
+            var solutionsAIPlayer = GetPopulatedWinningCombinations(gameModel, AIPlayer.PlayerAvatar);
+
+            // Attempt to win the game.
+            if (solutionsAIPlayer.Any(x => x[1] > 1))
             {
-                var solutionCellIds = solutionsNormalPlayer[i].GetRange(2, 3);
-
-                foreach (var cellId in solutionCellIds)
-                {
-                    if (gameModel.Board[cellId].CellState == normalPlayer.PlayerAvatar)
-                        solutionsNormalPlayer[i][1]++;
-
-                    if (gameModel.Board[cellId].CellState == AIPlayer.PlayerAvatar)
-                        solutionsAIPlayer[i][1]++;
-                }
-            }
-
-            // Attempt to win.
-            var test = solutionsAIPlayer.Where(x => x[1] > 1);
-            foreach (var solution in solutionsAIPlayer.Where(x => x[1] > 1))
-            {
-                foreach (var cellid in solution.GetRange(2, 3))
+                foreach (var cellid in solutionsAIPlayer.FirstOrDefault(x => x[1] > 1).GetRange(2, 3))
                 {
                     if (gameModel.Board[cellid].CellState == 0)
                         return cellid;
                 }
             }
 
-            // Can't win? Attempt to block.
-            foreach (var solution in solutionsNormalPlayer.OrderByDescending(x => x[1]))
-            {
-                foreach(var cellid in solution.GetRange(2, 3))
-                {
-                    if (gameModel.Board[cellid].CellState == 0)
-                        return cellid;
-                }
-            }
+            // If central cell is not taken, take it.
+            if (gameModel.Board[4].CellState == 0)
+                return 4;
 
-            // If all fails, revert to easier difficulty.
+            // If it can't win, revert to using medium to block.
             return MediumAITurn(gameModel);
         }
 
@@ -308,6 +295,28 @@ namespace TicTacToe
                 new List<int> { 2, 0, 0, 1, 2 }, new List<int> { 2, 0, 3, 4, 5 }, new List<int> { 2, 0, 6, 7, 8 },
                 new List<int> { 1, 0, 0, 4, 8 }, new List<int> { 1, 0, 2, 4, 6 }
             };
+        }
+
+        /// <summary>
+        /// Populate the winning combinations list with all the cells
+        /// the playerAvatar has taken and return the result.
+        /// </summary>
+        /// <returns>Populated winning combinations list.</returns>
+        /// <param name="gameModel">Game model.</param>
+        /// <param name="playerAvatar">Player avatar.</param>
+        private List<List<int>> GetPopulatedWinningCombinations(GameModel gameModel, int playerAvatar)
+        {
+            var solutions = GenerateWinningCombinationsList();
+            foreach (var solution in solutions)
+            {
+                var solutionCellIds = solution.GetRange(2, 3);
+                foreach (var cellId in solutionCellIds)
+                {
+                    if (gameModel.Board[cellId].CellState == playerAvatar)
+                        solutions[solutions.IndexOf(solution)][1]++;
+                }
+            }
+            return solutions;
         }
 
         /// <summary>
