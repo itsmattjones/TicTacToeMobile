@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using TicTacToe.Models;
+using TicTacToe.Models.Player;
 using Xamarin.Forms;
 
 namespace TicTacToe.ViewModels
@@ -109,38 +110,44 @@ namespace TicTacToe.ViewModels
         /// <param name="cellId">Cell identifier.</param>
         private void SelectCell(string cellId)
         {
-            GameModel = Program.gameManager.gameEngine.TakePlayerTurn(GameModel, cellId, out bool isGameWon, out bool isGameDraw);
+            GameModel = Program.GameManager.GameEngine.TakePlayerTurn(GameModel, cellId, out bool isGameWon, out bool isGameDraw);
 
-            IsGameWon = isGameWon;
-            if (IsGameWon)
-                GameWinner = GameModel.PlayerOne.IsPlayerTurn ? GameModel.PlayerOne.PlayerId : GameModel.PlayerTwo.PlayerId;
-
-            if(!IsGameWon)
-                IsGameDraw = isGameDraw;
-
-            BoardButtonsEnabled = !(IsGameWon || IsGameDraw);
+            UpdateGameStatus(isGameWon, isGameDraw);
 
             if (IsGameWon || isGameDraw)
                 return;
 
             // If next player is AI make it take its turn.
-            if (Program.gameManager.gameEngine.GetTurnPlayer(GameModel).PlayerType == PlayerType.AI)
-                SelectCellAI();
+            if (Program.GameManager.GameEngine.GetTurnPlayer(GameModel).PlayerType == PlayerType.Ai)
+                SelectCellAi();
         }
 
         /// <summary>
         /// Selects the cell for a AI player.
         /// </summary>
-        public void SelectCellAI()
+        private void SelectCellAi()
         {
-            GameModel = Program.gameManager.gameEngine.TakeAITurn(GameModel, out bool isGameWonAI, out bool isGameDrawAI);
+            GameModel = Program.GameManager.GameEngine.TakeAiTurn(GameModel, out bool isGameWonAi, out bool isGameDrawAi);
 
-            IsGameWon = isGameWonAI;
+            UpdateGameStatus(isGameWonAi, isGameDrawAi);
+
+            BoardButtonsEnabled = !(IsGameWon || IsGameDraw);
+        }
+
+        /// <summary>
+        /// Updates the game status including IsGameWon, IsGameDraw and
+        /// whether or not the game board buttons are enabled.
+        /// </summary>
+        /// <param name="isGameWon">If set to true is game won.</param>
+        /// <param name="isGameDraw">If set to true is game draw.</param>
+        private void UpdateGameStatus(bool isGameWon, bool isGameDraw)
+        {
+            IsGameWon = isGameWon;
             if (IsGameWon)
                 GameWinner = GameModel.PlayerOne.IsPlayerTurn ? GameModel.PlayerOne.PlayerId : GameModel.PlayerTwo.PlayerId;
 
             if (!IsGameWon)
-                IsGameDraw = isGameDrawAI;
+                IsGameDraw = isGameDraw;
 
             BoardButtonsEnabled = !(IsGameWon || IsGameDraw);
         }
@@ -158,13 +165,13 @@ namespace TicTacToe.ViewModels
         /// </summary>
         private void PlayAgain()
         {
-            if(GameModel.PlayerOne.PlayerType == PlayerType.AI || GameModel.PlayerTwo.PlayerType == PlayerType.AI)
+            if(GameModel.PlayerOne.PlayerType == PlayerType.Ai || GameModel.PlayerTwo.PlayerType == PlayerType.Ai)
             {
-                Program.gameManager.CreateSingleplayerGame();
+                Program.GameManager.CreateSingleplayerGame();
             }
             else
             {
-                Program.gameManager.CreateMultiplayerGame();
+                Program.GameManager.CreateMultiplayerGame();
             }
         }
 

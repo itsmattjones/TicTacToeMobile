@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TicTacToe.Models;
+using TicTacToe.Models.Player;
 using TicTacToe.ViewModels;
 using TicTacToe.Views;
 
@@ -7,15 +8,15 @@ namespace TicTacToe
 {
     public class GameManager
     {
-        public GameEngine gameEngine;
+        public GameEngine GameEngine;
 
         /// <summary>
         /// Creates a new multiplayer game.
         /// </summary>
         public void CreateMultiplayerGame()
         {
-            // Initalize Game Engine.
-            gameEngine = new GameEngine();
+            // Create Game Engine.
+            GameEngine = new GameEngine();
 
             // Setup model for the game.
             var gameModel = new GameModel
@@ -40,13 +41,13 @@ namespace TicTacToe
         public void CreateSingleplayerGame()
         {
             // Initalize Game Engine.
-            gameEngine = new GameEngine();
+            GameEngine = new GameEngine();
 
             // Setup model for the game.
             var gameModel = new GameModel
             {
                 PlayerOne = new NormalPlayerModel { PlayerId = 1, IsPlayerTurn = true, PlayerAvatar = 1 },
-                PlayerTwo = new AIPlayerModel { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2, Difficulty = Program.aiDifficulty },
+                PlayerTwo = new AiPlayerModel { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2, Difficulty = Program.AiDifficulty },
                 Board = new List<CellModel>()
             };
 
