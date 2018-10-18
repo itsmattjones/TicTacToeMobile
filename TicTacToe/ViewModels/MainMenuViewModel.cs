@@ -31,7 +31,7 @@ namespace TicTacToe.ViewModels
         /// </summary>
         private void CreateSingleplayer() 
         {
-            Program.gameManager.CreateSingleplayerGame();
+            Program.GameManager.CreateSingleplayerGame();
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace TicTacToe.ViewModels
         /// </summary>
         private void CreateMultiplayer() 
         { 
-            Program.gameManager.CreateMultiplayerGame();
+            Program.GameManager.CreateMultiplayerGame();
         }
 
         /// <summary>
