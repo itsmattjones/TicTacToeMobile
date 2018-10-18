@@ -9,8 +9,8 @@ namespace TicTacToe.Converters
     /// </summary>
     public class BoardCellTextConverter : IValueConverter
     {
-        readonly string p1 = "X";
-        readonly string p2 = "O";
+        private const string P1 = "X";
+        private const string P2 = "O";
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -19,9 +19,9 @@ namespace TicTacToe.Converters
                 case 0:
                     return string.Empty;
                 case 1:
-                    return p1;
+                    return P1;
                 case 2:
-                    return p2;
+                    return P2;
                 default:
                     return string.Empty;
             }
@@ -38,22 +38,22 @@ namespace TicTacToe.Converters
     /// </summary>
     public class BoardCellColourConverter : IValueConverter
     {
-        readonly Color p1 = Color.FromHex("#33cc33");
-        readonly Color p2 = Color.FromHex("#ff471a");
-        readonly Color unknown = Color.FromHex("#ccffff");
+        private readonly Color _p1 = Color.FromHex("#33cc33");
+        private readonly Color _p2 = Color.FromHex("#ff471a");
+        private readonly Color _unknown = Color.FromHex("#ccffff");
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             switch (value)
             {
                 case 0:
-                    return unknown;
+                    return _unknown;
                 case 1:
-                    return p1;
+                    return _p1;
                 case 2:
-                    return p2;
+                    return _p2;
                 default:
-                    return unknown;
+                    return _unknown;
             }
         }
 
@@ -69,9 +69,9 @@ namespace TicTacToe.Converters
     /// </summary>
     public class EndGameDialogWinner : IValueConverter
     {
-        readonly string PlayerOneText = "PLAYER 1";
-        readonly string PlayerTwoText = "PLAYER 2";
-        readonly string UnknownPlayerText = "UNKNOWN";
+        private const string PlayerOneText = "PLAYER 1";
+        private const string PlayerTwoText = "PLAYER 2";
+        private const string UnknownPlayerText = "UNKNOWN";
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
