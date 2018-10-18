@@ -10,31 +10,29 @@
         <converters:MediumButtonColourConverter x:Key="MediumButtonColourConverter" />
         <converters:HardButtonColourConverter x:Key="HardButtonColourConverter" />
         
-        <ResourceDictionary>
-            <Style x:Key="Title" TargetType="Label">
-                <Setter Property="FontSize" Value="48"/>
-                <Setter Property="TextColor" Value="White"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-                <Setter Property="VerticalTextAlignment" Value="Center"/>
-            </Style>
-            <Style x:Key="SubTitle" TargetType="Label">
-                <Setter Property="FontSize" Value="35"/>
-                <Setter Property="TextColor" Value="White"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-                <Setter Property="VerticalTextAlignment" Value="Center"/>
-            </Style>
-            <Style x:Key="SettingsButton" TargetType="Button">
-                 <Setter Property="Padding" Value="0,0,0,0"/>
-                 <Setter Property="Margin" Value="10,0,10,0"/>
-                 <Setter Property="FontSize" Value="22"/>
-                 <Setter Property="TextColor" Value="White"/>
-                 <Setter Property="BackgroundColor" Value="#4c4c4c"/>
-                 <Setter Property="BorderColor" Value="#dbdbdb"/>
-                 <Setter Property="BorderRadius" Value="15"/>
-                 <Setter Property="BorderWidth" Value="2"/>
-                 <Setter Property="FontFamily" Value="Arial"/>
-             </Style>
-        </ResourceDictionary>
+        <Style x:Key="Title" TargetType="Label">
+           <Setter Property="FontSize" Value="48"/>
+           <Setter Property="TextColor" Value="White"/>
+           <Setter Property="HorizontalTextAlignment" Value="Center"/>
+           <Setter Property="VerticalTextAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="SubTitle" TargetType="Label">
+           <Setter Property="FontSize" Value="35"/>
+           <Setter Property="TextColor" Value="White"/>
+           <Setter Property="HorizontalTextAlignment" Value="Center"/>
+           <Setter Property="VerticalTextAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="SettingsButton" TargetType="Button">
+            <Setter Property="Padding" Value="0,0,0,0"/>
+            <Setter Property="Margin" Value="10,0,10,0"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="BackgroundColor" Value="#4c4c4c"/>
+            <Setter Property="BorderColor" Value="#dbdbdb"/>
+            <Setter Property="BorderRadius" Value="15"/>
+            <Setter Property="BorderWidth" Value="2"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+        </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid BackgroundColor="#5ed177">

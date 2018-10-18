@@ -1,12 +1,12 @@
 ﻿namespace TicTacToe.Models.Player
 {
-    public class NormalPlayerModel : IPlayerModel
-    {
+    public class AiPlayerModel : IPlayerModel
+	{
         public int PlayerId { get; set; }
 
         public bool IsPlayerTurn { get; set; }
 
-        public PlayerType PlayerType { get; set; } = PlayerType.Normal;
+        public PlayerType PlayerType { get; set; } = PlayerType.Ai;
 
         public int PlayerAvatar { get; set; }
 

@@ -37,15 +37,15 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="0">
                     <Button Text="Singleplayer" Style="{StaticResource MenuButton}" Command="{Binding SingleplayerCmd}"/>
                 </Grid>
                 
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="1">
                     <Button Text="Multiplayer" Style="{StaticResource MenuButton}" Command="{Binding MultiplayerCmd}"/>
                 </Grid>
                 
-                <Grid Grid.Row="3">
+                <Grid Grid.Row="2">
                     <Button Text="Settings" Style="{StaticResource MenuButton}" Command="{Binding SettingsCmd}"/>
                 </Grid>
             </Grid>

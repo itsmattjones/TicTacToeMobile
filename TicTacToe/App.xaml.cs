@@ -1,7 +1,4 @@
-﻿using System;
-using TicTacToe.ViewModels;
-using TicTacToe.Views;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -14,7 +11,7 @@ namespace TicTacToe
             InitializeComponent();
 
             // Start application through program class.
-            Program application = new Program();
+            var application = new Program();
         }
 
         protected override void OnStart()
