@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using TicTacToe.ViewModels;
+﻿using TicTacToe.ViewModels;
 using Xamarin.Forms;
 
 namespace TicTacToe.Views
 {
     public partial class MainMenu : ContentPage
     {
-        public MainMenu(MainMenuViewModel _mainMenuViewModel)
+        public MainMenu(MainMenuViewModel mainMenuViewModel)
         {
-            BindingContext = _mainMenuViewModel;
+            BindingContext = mainMenuViewModel;
             InitializeComponent();
         }
     }

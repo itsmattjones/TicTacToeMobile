@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using TicTacToe.Models;
+using TicTacToe.Models.Player;
 using Xamarin.Forms;
 
 namespace TicTacToe.Converters
@@ -11,17 +11,14 @@ namespace TicTacToe.Converters
     /// </summary>
     public class EasyButtonColourConverter : IValueConverter
     {
-        public Color Selected = Color.FromHex("#286800");
-        public Color NotSelected = Color.FromHex("#383838");
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             switch(value)
             {
-                case AIDifficulty.Easy:
-                    return Selected;
+                case AiDifficulty.Easy:
+                    return Color.FromHex("#286800");
                 default:
-                    return NotSelected;
+                    return Color.FromHex("#383838");
             }
         }
 
@@ -37,17 +34,14 @@ namespace TicTacToe.Converters
     /// </summary>
     public class MediumButtonColourConverter : IValueConverter
     {
-        public Color Selected = Color.FromHex("#286800");
-        public Color NotSelected = Color.FromHex("#383838");
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             switch (value)
             {
-                case AIDifficulty.Medium:
-                    return Selected;
+                case AiDifficulty.Medium:
+                    return Color.FromHex("#286800");
                 default:
-                    return NotSelected;
+                    return Color.FromHex("#383838");
             }
         }
 
@@ -63,17 +57,14 @@ namespace TicTacToe.Converters
     /// </summary>
     public class HardButtonColourConverter : IValueConverter
     {
-        public Color Selected = Color.FromHex("#286800");
-        public Color NotSelected = Color.FromHex("#383838");
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             switch (value)
             {
-                case AIDifficulty.Hard:
-                    return Selected;
+                case AiDifficulty.Hard:
+                    return Color.FromHex("#286800");
                 default:
-                    return NotSelected;
+                    return Color.FromHex("#383838");
             }
         }
 

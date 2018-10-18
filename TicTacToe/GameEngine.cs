@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Models;
+using TicTacToe.Models.Player;
 
 namespace TicTacToe
 {
@@ -12,30 +13,30 @@ namespace TicTacToe
         /// </summary>
         /// <returns>The updated game model.</returns>
         /// <param name="gameModel">Game model.</param>
-        /// <param name="cellId">Cell identifier.</param>
+        /// <param name="chosenCell">Cell identifier.</param>
         /// <param name="gameIsWon">If set to true game is won.</param>
         /// <param name="gameIsDraw">If set to true game is draw.</param>
-        public GameModel TakePlayerTurn(GameModel gameModel, string cellId, out bool gameIsWon, out bool gameIsDraw)
+        public GameModel TakePlayerTurn(GameModel gameModel, string chosenCell, out bool gameIsWon, out bool gameIsDraw)
         {
-            bool result = int.TryParse(cellId, out int CellId);
+            var result = int.TryParse(chosenCell, out var cellId);
             gameIsWon = false;
             gameIsDraw = false;
 
             // If not a valid cellId abort.
-            if (!result || cellId == string.Empty)
+            if (!result || chosenCell == string.Empty)
                 return gameModel;
 
             // If the cell's already claimed abort.
-            if (gameModel.Board[CellId].CellState != 0)
+            if (gameModel.Board[cellId].CellState != 0)
                 return gameModel;
                 
-            IPlayerModel PlayerTurn = GetTurnPlayer(gameModel);
+            var playerTurn = GetTurnPlayer(gameModel);
 
             // Set the cell to this player.
-            gameModel.Board[CellId].CellState = PlayerTurn.PlayerAvatar;
+            gameModel.Board[cellId].CellState = playerTurn.PlayerAvatar;
 
             // Check if player has won, if has end game. Also check for draw.
-            gameIsWon = GameIsWon(gameModel.Board, PlayerTurn);
+            gameIsWon = GameIsWon(gameModel.Board, playerTurn);
             gameIsDraw = GameIsDraw(gameModel.Board);
 
             if (gameIsWon || gameIsDraw)
@@ -55,29 +56,29 @@ namespace TicTacToe
         /// <param name="gameModel">Game model.</param>
         /// <param name="gameIsWon">If set to true game is won.</param>
         /// <param name="gameIsDraw">If set to true game is draw.</param>
-        public GameModel TakeAITurn(GameModel gameModel, out bool gameIsWon, out bool gameIsDraw)
+        public GameModel TakeAiTurn(GameModel gameModel, out bool gameIsWon, out bool gameIsDraw)
         {
             gameIsWon = false;
             gameIsDraw = false;
             int cellId;
 
-            AIDifficulty difficulty = gameModel.PlayerOne.PlayerType == PlayerType.AI ? 
+            var difficulty = gameModel.PlayerOne.PlayerType == PlayerType.Ai ? 
                 gameModel.PlayerOne.Difficulty : gameModel.PlayerTwo.Difficulty;
 
             // Make selection based on difficulty.
             switch(difficulty)
             {
-                case AIDifficulty.Easy:
-                    cellId = EasyAITurn(gameModel);
+                case AiDifficulty.Easy:
+                    cellId = EasyAiTurn(gameModel);
                     break;
-                case AIDifficulty.Medium:
-                    cellId = MediumAITurn(gameModel);
+                case AiDifficulty.Medium:
+                    cellId = MediumAiTurn(gameModel);
                     break;
-                case AIDifficulty.Hard:
-                    cellId = HardAITurn(gameModel);
+                case AiDifficulty.Hard:
+                    cellId = HardAiTurn(gameModel);
                     break;
                 default: // Default to medium
-                    cellId = MediumAITurn(gameModel);
+                    cellId = MediumAiTurn(gameModel);
                     break;
             }
 
@@ -85,13 +86,13 @@ namespace TicTacToe
             if (cellId == -1 || gameModel.Board[cellId].CellState != 0)
                 return gameModel;
                 
-            IPlayerModel PlayerTurn = GetTurnPlayer(gameModel);
+            var playerTurn = GetTurnPlayer(gameModel);
 
             // Set the cell to this player.
-            gameModel.Board[cellId].CellState = PlayerTurn.PlayerAvatar;
+            gameModel.Board[cellId].CellState = playerTurn.PlayerAvatar;
 
             // Check if player has won, if has game will end. Also check for draw.
-            gameIsWon = GameIsWon(gameModel.Board, PlayerTurn);
+            gameIsWon = GameIsWon(gameModel.Board, playerTurn);
             gameIsDraw = GameIsDraw(gameModel.Board);
 
             if (gameIsWon || gameIsDraw)
@@ -109,7 +110,7 @@ namespace TicTacToe
         /// </summary>
         /// <returns>The chosen cell to select.</returns>
         /// <param name="gameModel">Game model.</param>
-        public int EasyAITurn(GameModel gameModel)
+        private int EasyAiTurn(GameModel gameModel)
         {
             foreach (var cell in gameModel.Board)
             {
@@ -124,42 +125,47 @@ namespace TicTacToe
         /// </summary>
         /// <returns>The chosen cell to select.</returns>
         /// <param name="gameModel">Game model.</param>
-        public int MediumAITurn(GameModel gameModel)
+        private int MediumAiTurn(GameModel gameModel)
         {
-            IPlayerModel otherPlayer = gameModel.PlayerOne.IsPlayerTurn ? gameModel.PlayerTwo : gameModel.PlayerOne;
-
+            var otherPlayer = gameModel.PlayerOne.IsPlayerTurn ? gameModel.PlayerTwo : gameModel.PlayerOne;
             var solutions = GetPopulatedWinningCombinations(gameModel, otherPlayer.PlayerAvatar);
 
             // Attempt to block solutions with 2 cells taken by the other player.
-            var possibleSolutions = solutions.OrderByDescending(x => x[1]);
+            var possibleSolutions = solutions.OrderByDescending(x => x[1]).ToList();
             if (possibleSolutions.Any(x => x[1] > 1)) 
             {
                 var solution = possibleSolutions.Where(x => x[1] > 1).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-                foreach (var cellid in solution.GetRange(2, 3))
+                if (solution != null)
                 {
-                    if (gameModel.Board[cellid].CellState == 0)
-                        return cellid;
+                    foreach (var cellId in solution.GetRange(2, 3))
+                    {
+                        if (gameModel.Board[cellId].CellState == 0)
+                            return cellId;
+                    }   
                 }
             }
 
             // Attempt to block solutions with 1 cell taken by the other player.
             if(possibleSolutions.Any(x => x[1] > 0))
             {
+                var freeCellIds = new List<int>();
                 var solution = possibleSolutions.Where(x => x[1] > 0).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-                var untakenCellIds = new List<int>();
 
-                foreach (var cellid in solution.GetRange(2, 3))
+                if (solution != null)
                 {
-                    if (gameModel.Board[cellid].CellState == 0)
-                        untakenCellIds.Add(cellid);
+                    foreach (var cellId in solution.GetRange(2, 3))
+                    {
+                        if (gameModel.Board[cellId].CellState == 0)
+                            freeCellIds.Add(cellId);
+                    }   
                 }
 
-                if (untakenCellIds.Count > 0)
-                    return untakenCellIds.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+                if (freeCellIds.Count > 0)
+                    return freeCellIds.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
             }
 
             // If all fails, revert to previous difficulty.
-            return EasyAITurn(gameModel);
+            return EasyAiTurn(gameModel);
         }
 
         /// <summary>
@@ -167,19 +173,23 @@ namespace TicTacToe
         /// </summary>
         /// <returns>The chosen cell to select.</returns>
         /// <param name="gameModel">Game model.</param>
-        public int HardAITurn(GameModel gameModel)
+        private int HardAiTurn(GameModel gameModel)
         {
-            IPlayerModel AIPlayer = gameModel.PlayerOne.IsPlayerTurn ? gameModel.PlayerOne : gameModel.PlayerTwo;
+            var aiPlayer = gameModel.PlayerOne.IsPlayerTurn ? gameModel.PlayerOne : gameModel.PlayerTwo;
 
-            var solutionsAIPlayer = GetPopulatedWinningCombinations(gameModel, AIPlayer.PlayerAvatar);
+            var solutionsAiPlayer = GetPopulatedWinningCombinations(gameModel, aiPlayer.PlayerAvatar);
 
             // Attempt to win the game.
-            if (solutionsAIPlayer.Any(x => x[1] > 1))
+            if (solutionsAiPlayer.Any(x => x[1] > 1))
             {
-                foreach (var cellid in solutionsAIPlayer.FirstOrDefault(x => x[1] > 1).GetRange(2, 3))
+                var solution = solutionsAiPlayer.FirstOrDefault(x => x[1] > 1);
+                if (solution != null)
                 {
-                    if (gameModel.Board[cellid].CellState == 0)
-                        return cellid;
+                    foreach (var cellId in solution.GetRange(2, 3))
+                    {
+                        if (gameModel.Board[cellId].CellState == 0)
+                            return cellId;
+                    }   
                 }
             }
 
@@ -188,7 +198,7 @@ namespace TicTacToe
                 return 4;
 
             // If it can't win, revert to using medium to block.
-            return MediumAITurn(gameModel);
+            return MediumAiTurn(gameModel);
         }
 
         /// <summary>
@@ -199,7 +209,7 @@ namespace TicTacToe
         /// <param name="player">The player to check.</param>
         private bool GameIsWon(List<CellModel> board, IPlayerModel player)
         {
-            return CheckForVictory(board, player) ? true : false;
+            return CheckForVictory(board, player);
         }
 
         /// <summary>
@@ -209,7 +219,7 @@ namespace TicTacToe
         /// <param name="board">The game board.</param>
         private bool GameIsDraw(List<CellModel> board)
         {
-            return CheckBoardFull(board) ? true : false;
+            return CheckBoardFull(board);
         }
 
         #region Helper Methods
@@ -329,7 +339,7 @@ namespace TicTacToe
         private bool IsBoardMatch(int avatar, CellModel boardCell)
         {
             var cellState = boardCell.CellState;
-            return avatar == cellState ? true : false;
+            return avatar == cellState;
         }
 
         #endregion

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using TicTacToe.Models;
+using TicTacToe.Models.Player;
 using Xamarin.Forms;
 
 namespace TicTacToe.ViewModels
@@ -8,7 +8,7 @@ namespace TicTacToe.ViewModels
     {
         #region Fields
 
-        private AIDifficulty _chosenDifficulty;
+        private AiDifficulty _chosenDifficulty;
 
         #endregion
 
@@ -20,7 +20,7 @@ namespace TicTacToe.ViewModels
         /// <summary>
         /// The chosen game difficulty.
         /// </summary>
-        public AIDifficulty ChosenDifficulty
+        public AiDifficulty ChosenDifficulty
         {
             get { return _chosenDifficulty; }
             set
@@ -39,7 +39,7 @@ namespace TicTacToe.ViewModels
         {
             ChangeDifficultyCommand = new Command<string>(ChangeDifficulty);
             MainMenuCommand = new Command(ShowMainMenu);
-            ChosenDifficulty = Program.aiDifficulty;
+            ChosenDifficulty = Program.AiDifficulty;
         }
 
         #region Helper Methods
@@ -56,17 +56,17 @@ namespace TicTacToe.ViewModels
             switch(difficultyType)
             {
                 case "easy":
-                    Program.aiDifficulty = AIDifficulty.Easy;
+                    Program.AiDifficulty = AiDifficulty.Easy;
                     break;
                 case "medium":
-                    Program.aiDifficulty = AIDifficulty.Medium;
+                    Program.AiDifficulty = AiDifficulty.Medium;
                     break;
                 case "hard":
-                    Program.aiDifficulty = AIDifficulty.Hard;
+                    Program.AiDifficulty = AiDifficulty.Hard;
                     break;
             }
 
-            ChosenDifficulty = Program.aiDifficulty;
+            ChosenDifficulty = Program.AiDifficulty;
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using TicTacToe.Models;
+﻿using TicTacToe.Models.Player;
 using TicTacToe.ViewModels;
 using TicTacToe.Views;
 using Xamarin.Forms;
@@ -7,13 +7,14 @@ namespace TicTacToe
 {
     public class Program
     {
-        public static GameManager gameManager;
-        public static AIDifficulty aiDifficulty;
+        public static GameManager GameManager;
+        public static AiDifficulty AiDifficulty;
 
         public Program()
         {
-            gameManager = new GameManager();
-            aiDifficulty = AIDifficulty.Medium;
+            GameManager = new GameManager();
+            AiDifficulty = AiDifficulty.Medium;
+            
             ReturnToMainMenu();
         }
 
