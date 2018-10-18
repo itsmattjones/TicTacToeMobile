@@ -1,13 +1,12 @@
-﻿namespace TicTacToe.Models
+﻿namespace TicTacToe.Models.Player
 {
     public enum PlayerType 
     {
-        Unknown,
         Normal,
-        AI
+        Ai
     }
 
-    public enum AIDifficulty
+    public enum AiDifficulty
     {
         Easy,
         Medium,
@@ -45,6 +44,6 @@
         /// is an AI player.
         /// </summary>
         /// <value>The AI difficulty.</value>
-        AIDifficulty Difficulty { get; set; }
+        AiDifficulty Difficulty { get; set; }
     }
 }
