@@ -8,12 +8,10 @@ namespace TicTacToe
     public class Program
     {
         public static GameManager GameManager;
-        public static AiDifficulty AiDifficulty;
 
         public Program()
         {
-            GameManager = new GameManager();
-            AiDifficulty = AiDifficulty.Medium;
+            GameManager = new GameManager { AiDifficulty = AiDifficulty.Medium };
             
             ReturnToMainMenu();
         }

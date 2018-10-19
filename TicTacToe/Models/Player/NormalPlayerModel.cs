@@ -11,5 +11,7 @@
         public int PlayerAvatar { get; set; }
 
         public AiDifficulty Difficulty { get; set; }
+        
+        public int TurnsTaken { get; set; }
     }
 }

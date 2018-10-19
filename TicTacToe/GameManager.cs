@@ -9,6 +9,7 @@ namespace TicTacToe
     public class GameManager
     {
         public GameEngine GameEngine;
+        public AiDifficulty AiDifficulty;
 
         /// <summary>
         /// Creates a new multiplayer game.
@@ -47,7 +48,7 @@ namespace TicTacToe
             var gameModel = new GameModel
             {
                 PlayerOne = new NormalPlayerModel { PlayerId = 1, IsPlayerTurn = true, PlayerAvatar = 1 },
-                PlayerTwo = new AiPlayerModel { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2, Difficulty = Program.AiDifficulty },
+                PlayerTwo = new AiPlayerModel { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2, Difficulty = AiDifficulty },
                 Board = new List<CellModel>()
             };
 
