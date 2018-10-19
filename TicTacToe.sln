@@ -69,7 +69,7 @@ Global
 		{91936D1E-53D9-44A1-943E-C613300C7220}.AppStore|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		version = 1.1
+		version = 1.2
 		description = Initial prototype of TicTacToe cross-platform mobile application.
 	EndGlobalSection
 EndGlobal
