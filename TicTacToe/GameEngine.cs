@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using TicTacToe.Models;
 using TicTacToe.Models.Player;
@@ -35,6 +36,9 @@ namespace TicTacToe
             // Set the cell to this player.
             gameModel.Board[cellId].CellState = playerTurn.PlayerAvatar;
 
+            // Update player turns taken.
+            playerTurn.TurnsTaken++;
+            
             // Check if player has won, if has end game. Also check for draw.
             gameIsWon = GameIsWon(gameModel.Board, playerTurn);
             gameIsDraw = GameIsDraw(gameModel.Board);
@@ -90,6 +94,9 @@ namespace TicTacToe
 
             // Set the cell to this player.
             gameModel.Board[cellId].CellState = playerTurn.PlayerAvatar;
+            
+            // Update player turns taken.
+            playerTurn.TurnsTaken++;
 
             // Check if player has won, if has game will end. Also check for draw.
             gameIsWon = GameIsWon(gameModel.Board, playerTurn);
@@ -260,36 +267,20 @@ namespace TicTacToe
         {
             var pAvatar = player.PlayerAvatar;
 
-            // Check horizontal
-            if (IsBoardMatch(pAvatar, board[0]) && IsBoardMatch(pAvatar, board[1]) && IsBoardMatch(pAvatar, board[2]))
-                return true;
+            var solutions = GenerateWinningCombinationsList();
+            foreach (var solution in solutions)
+            {
+                var cellsTaken = 0;
+                foreach (var cellId in solution.GetRange(2, 3))
+                {
+                    if (IsBoardMatch(pAvatar, board[cellId]))
+                        cellsTaken++;
+                }
 
-            if (IsBoardMatch(pAvatar, board[3]) && IsBoardMatch(pAvatar, board[4]) && IsBoardMatch(pAvatar, board[5]))
-                return true;
-
-            if (IsBoardMatch(pAvatar, board[6]) && IsBoardMatch(pAvatar, board[7]) && IsBoardMatch(pAvatar, board[8]))
-                return true;
-
-
-            // Check vertical
-            if (IsBoardMatch(pAvatar, board[0]) && IsBoardMatch(pAvatar, board[3]) && IsBoardMatch(pAvatar, board[6]))
-                return true;
-
-            if (IsBoardMatch(pAvatar, board[1]) && IsBoardMatch(pAvatar, board[4]) && IsBoardMatch(pAvatar, board[7]))
-                return true;
-
-            if (IsBoardMatch(pAvatar, board[2]) && IsBoardMatch(pAvatar, board[5]) && IsBoardMatch(pAvatar, board[8]))
-                return true;
-
-
-            // Check diagonal
-            if (IsBoardMatch(pAvatar, board[0]) && IsBoardMatch(pAvatar, board[4]) && IsBoardMatch(pAvatar, board[8]))
-                return true;
-
-            if (IsBoardMatch(pAvatar, board[2]) && IsBoardMatch(pAvatar, board[4]) && IsBoardMatch(pAvatar, board[6]))
-                return true;
-
-
+                if (cellsTaken == 3)
+                    return true;
+            }
+            
             return false;
         }
 
