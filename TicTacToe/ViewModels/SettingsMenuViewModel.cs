@@ -39,7 +39,7 @@ namespace TicTacToe.ViewModels
         {
             ChangeDifficultyCommand = new Command<string>(ChangeDifficulty);
             MainMenuCommand = new Command(ShowMainMenu);
-            ChosenDifficulty = Program.AiDifficulty;
+            ChosenDifficulty = Program.GameManager.AiDifficulty;
         }
 
         #region Helper Methods
@@ -56,17 +56,17 @@ namespace TicTacToe.ViewModels
             switch(difficultyType)
             {
                 case "easy":
-                    Program.AiDifficulty = AiDifficulty.Easy;
+                    Program.GameManager.AiDifficulty = AiDifficulty.Easy;
                     break;
                 case "medium":
-                    Program.AiDifficulty = AiDifficulty.Medium;
+                    Program.GameManager.AiDifficulty = AiDifficulty.Medium;
                     break;
                 case "hard":
-                    Program.AiDifficulty = AiDifficulty.Hard;
+                    Program.GameManager.AiDifficulty = AiDifficulty.Hard;
                     break;
             }
 
-            ChosenDifficulty = Program.AiDifficulty;
+            ChosenDifficulty = Program.GameManager.AiDifficulty;
         }
 
         /// <summary>
