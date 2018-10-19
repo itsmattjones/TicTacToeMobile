@@ -45,5 +45,11 @@
         /// </summary>
         /// <value>The AI difficulty.</value>
         AiDifficulty Difficulty { get; set; }
+        
+        /// <summary>
+        /// Gets or updates the amount of turns the player has taken.
+        /// </summary>
+        /// <value>Turns taken by player.</value>
+        int TurnsTaken { get; set; }
     }
 }
