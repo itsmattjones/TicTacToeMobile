@@ -8,26 +8,26 @@
         <ResourceDictionary>
             <Style x:Key="MenuButton" TargetType="Button">
                 <Setter Property="Padding" Value="0,0,0,0"/>
-                <Setter Property="Margin" Value="10,0,10,0"/>
+                <Setter Property="Margin" Value="30,0,30,0"/>
                 <Setter Property="FontSize" Value="24"/>
                 <Setter Property="TextColor" Value="White"/>
-                <Setter Property="BackgroundColor" Value="#4c4c4c"/>
-                <Setter Property="BorderColor" Value="#dbdbdb"/>
-                <Setter Property="BorderRadius" Value="15"/>
+                <Setter Property="BackgroundColor" Value="#ffba1c"/>
+                <Setter Property="BorderColor" Value="#ffffff"/>
+                <Setter Property="BorderRadius" Value="40"/>
                 <Setter Property="BorderWidth" Value="2"/>
                 <Setter Property="FontFamily" Value="Arial"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid BackgroundColor="#5ed177">
+        <Grid BackgroundColor="#3eb4ef">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60*"/>
                 <RowDefinition Height="60*"/>
             </Grid.RowDefinitions>
             
             <Grid Grid.Row="0">
-                <Image VerticalOptions="End" HorizontalOptions="Center" Source="tictactoe.png"/>
+                <Image x:Name="AppLogoImage" VerticalOptions="End" HorizontalOptions="Center" Source="tictactoe.png"/>
             </Grid>
             
             <Grid Grid.Row="1" Margin="0,0,0,20">

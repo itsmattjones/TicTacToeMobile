@@ -24,46 +24,42 @@
         </Style>
         <Style x:Key="SettingsButton" TargetType="Button">
             <Setter Property="Padding" Value="0,0,0,0"/>
-            <Setter Property="Margin" Value="10,0,10,0"/>
+            <Setter Property="Margin" Value="40,0,40,0"/>
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="TextColor" Value="White"/>
-            <Setter Property="BackgroundColor" Value="#4c4c4c"/>
-            <Setter Property="BorderColor" Value="#dbdbdb"/>
-            <Setter Property="BorderRadius" Value="15"/>
+            <Setter Property="BackgroundColor" Value="#ffba1c"/>
+            <Setter Property="BorderColor" Value="#ffffff"/>
+            <Setter Property="BorderRadius" Value="40"/>
             <Setter Property="BorderWidth" Value="2"/>
             <Setter Property="FontFamily" Value="Arial"/>
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid BackgroundColor="#5ed177">
+        <Grid BackgroundColor="#3eb4ef">
             <Grid.RowDefinitions>
-                <RowDefinition Height="20*"/>
-                <RowDefinition Height="20*"/>
                 <RowDefinition Height="15*"/>
-                <RowDefinition Height="15*"/>
-                <RowDefinition Height="15*"/>
-                <RowDefinition Height="15*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="30*"/>
+                <RowDefinition Height="10*"/>
             </Grid.RowDefinitions>
-            
+        
             <Grid Grid.Row="0">
-                <Label Text="Settings" Style="{StaticResource Title}"/>
-            </Grid>
-            
-            <Grid Grid.Row="1">
                 <Label Text="Difficulty" Style="{StaticResource SubTitle}"/>
             </Grid>
             
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="1">
                 <Button Text="Easy" Style="{StaticResource SettingsButton}" Command="{Binding ChangeDifficultyCommand}" CommandParameter="easy"
                         BackgroundColor="{Binding ChosenDifficulty, Converter={StaticResource EasyButtonColourConverter}}"/>
             </Grid>
             
-            <Grid Grid.Row="3">
+            <Grid Grid.Row="2">
                 <Button Text="Medium" Style="{StaticResource SettingsButton}" Command="{Binding ChangeDifficultyCommand}" CommandParameter="medium"
                         BackgroundColor="{Binding ChosenDifficulty, Converter={StaticResource MediumButtonColourConverter}}"/>
             </Grid>
             
-            <Grid Grid.Row="4">
+            <Grid Grid.Row="3">
                 <Button Text="Hard" Style="{StaticResource SettingsButton}" Command="{Binding ChangeDifficultyCommand}" CommandParameter="hard"
                         BackgroundColor="{Binding ChosenDifficulty, Converter={StaticResource HardButtonColourConverter}}"/>
             </Grid>

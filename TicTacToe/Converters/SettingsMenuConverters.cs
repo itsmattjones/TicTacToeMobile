@@ -16,9 +16,9 @@ namespace TicTacToe.Converters
             switch(value)
             {
                 case AiDifficulty.Easy:
-                    return Color.FromHex("#286800");
+                    return Color.FromHex("#604609");
                 default:
-                    return Color.FromHex("#383838");
+                    return Color.FromHex("#ffba1c");
             }
         }
 
@@ -39,9 +39,9 @@ namespace TicTacToe.Converters
             switch (value)
             {
                 case AiDifficulty.Medium:
-                    return Color.FromHex("#286800");
+                    return Color.FromHex("#604609");
                 default:
-                    return Color.FromHex("#383838");
+                    return Color.FromHex("#ffba1c");
             }
         }
 
@@ -62,9 +62,9 @@ namespace TicTacToe.Converters
             switch (value)
             {
                 case AiDifficulty.Hard:
-                    return Color.FromHex("#286800");
+                    return Color.FromHex("#604609");
                 default:
-                    return Color.FromHex("#383838");
+                    return Color.FromHex("#ffba1c");
             }
         }
 
