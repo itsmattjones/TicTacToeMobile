@@ -65,7 +65,7 @@
                 <RowDefinition Height="100*" />
             </Grid.RowDefinitions>
             
-            <Grid Grid.Row="0" BackgroundColor="Red">
+            <Grid Grid.Row="0" BackgroundColor="#3eb4ef">
                 <Label Style="{StaticResource Title}" 
                     Text="{Binding CurrentTurnPlayerId, Converter={StaticResource CurrentPlayerTurnConverter}}" />
             </Grid>
