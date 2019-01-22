@@ -10,8 +10,8 @@ namespace TicTacToe
     {
         public GameEngine GameEngine;
         public AiDifficulty AiDifficulty;
-        public int PlayerOneAvatar = 3;
-        public int PlayerTwoAvatar = 4;
+        public int PlayerOneAvatar = 1;
+        public int PlayerTwoAvatar = 2;
 
         /// <summary>
         /// Creates a new multiplayer game.

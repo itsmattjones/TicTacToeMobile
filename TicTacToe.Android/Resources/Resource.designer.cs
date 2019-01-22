@@ -2340,19 +2340,19 @@ namespace TicTacToe.Droid
 			public const int abc_vector_test = 2130837586;
 			
 			// aapt resource value: 0x7f020053
-			public const int avatar_0 = 2130837587;
+			public const int avatar_blank = 2130837587;
 			
 			// aapt resource value: 0x7f020054
-			public const int avatar_blank = 2130837588;
+			public const int avatar_p1_0 = 2130837588;
 			
 			// aapt resource value: 0x7f020055
-			public const int avatar_burger = 2130837589;
+			public const int avatar_p1_burger = 2130837589;
 			
 			// aapt resource value: 0x7f020056
-			public const int avatar_hotdog = 2130837590;
+			public const int avatar_p2_hotdog = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public const int avatar_x = 2130837591;
+			public const int avatar_p2_x = 2130837591;
 			
 			// aapt resource value: 0x7f020058
 			public const int avd_hide_password = 2130837592;

@@ -6,7 +6,7 @@
              NavigationPage.HasNavigationBar="False">
     
     <ContentPage.Resources>
-        <converters:BoardCellImageConverter x:Key="CellImageConverter"/>
+        <converters:AvatarIdToImageConverter x:Key="AvatarIdToImageConverter"/>
         <converters:CurrentPlayerTurnConverter x:Key="CurrentPlayerTurnConverter"/>
         <converters:EndGameDialogWinner x:Key="EndGameDialogWinner"/>
         
@@ -87,47 +87,47 @@
                 
                 <!-- TicTacToe game board. -->
                 <Image Grid.Row="0" Grid.Column="0" Aspect = "AspectFill"
-                       Source="{Binding GameModel.Board[0].CellState, Converter={StaticResource CellImageConverter}}"/>
+                       Source="{Binding GameModel.Board[0].CellState, Converter={StaticResource AvatarIdToImageConverter}}"/>
                 <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource BoardButton}"
                         Command="{Binding SelectCellCommand}" CommandParameter="0" IsEnabled="{Binding BoardButtonsEnabled}"/>
                 
                 <Image Grid.Row="0" Grid.Column="1" Aspect = "AspectFill"
-                       Source="{Binding GameModel.Board[1].CellState, Converter={StaticResource CellImageConverter}}"/>
+                       Source="{Binding GameModel.Board[1].CellState, Converter={StaticResource AvatarIdToImageConverter}}"/>
                 <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource BoardButton}"
                         Command="{Binding SelectCellCommand}" CommandParameter="1" IsEnabled="{Binding BoardButtonsEnabled}"/>
                 
                 <Image Grid.Row="0" Grid.Column="2" Aspect = "AspectFill"
-                       Source="{Binding GameModel.Board[2].CellState, Converter={StaticResource CellImageConverter}}"/>
+                       Source="{Binding GameModel.Board[2].CellState, Converter={StaticResource AvatarIdToImageConverter}}"/>
                 <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource BoardButton}"
                         Command="{Binding SelectCellCommand}" CommandParameter="2" IsEnabled="{Binding BoardButtonsEnabled}"/>
                 
                 <Image Grid.Row="1" Grid.Column="0" Aspect = "AspectFill"
-                       Source="{Binding GameModel.Board[3].CellState, Converter={StaticResource CellImageConverter}}"/>
+                       Source="{Binding GameModel.Board[3].CellState, Converter={StaticResource AvatarIdToImageConverter}}"/>
                 <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource BoardButton}"
                         Command="{Binding SelectCellCommand}" CommandParameter="3" IsEnabled="{Binding BoardButtonsEnabled}"/>
                         
                 <Image Grid.Row="1" Grid.Column="1" Aspect = "AspectFill"
-                       Source="{Binding GameModel.Board[4].CellState, Converter={StaticResource CellImageConverter}}"/>
+                       Source="{Binding GameModel.Board[4].CellState, Converter={StaticResource AvatarIdToImageConverter}}"/>
                 <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource BoardButton}"
                         Command="{Binding SelectCellCommand}" CommandParameter="4" IsEnabled="{Binding BoardButtonsEnabled}"/>
                 
                 <Image Grid.Row="1" Grid.Column="2" Aspect = "AspectFill"
-                       Source="{Binding GameModel.Board[5].CellState, Converter={StaticResource CellImageConverter}}"/>
+                       Source="{Binding GameModel.Board[5].CellState, Converter={StaticResource AvatarIdToImageConverter}}"/>
                 <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource BoardButton}"
                         Command="{Binding SelectCellCommand}" CommandParameter="5" IsEnabled="{Binding BoardButtonsEnabled}"/>
                 
                 <Image Grid.Row="2" Grid.Column="0" Aspect = "AspectFill"
-                       Source="{Binding GameModel.Board[6].CellState, Converter={StaticResource CellImageConverter}}"/>
+                       Source="{Binding GameModel.Board[6].CellState, Converter={StaticResource AvatarIdToImageConverter}}"/>
                 <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource BoardButton}"
                         Command="{Binding SelectCellCommand}" CommandParameter="6" IsEnabled="{Binding BoardButtonsEnabled}"/>
                 
                 <Image Grid.Row="2" Grid.Column="1" Aspect = "AspectFill"
-                       Source="{Binding GameModel.Board[7].CellState, Converter={StaticResource CellImageConverter}}"/>
+                       Source="{Binding GameModel.Board[7].CellState, Converter={StaticResource AvatarIdToImageConverter}}"/>
                 <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource BoardButton}"
                         Command="{Binding SelectCellCommand}" CommandParameter="7" IsEnabled="{Binding BoardButtonsEnabled}"/>
                         
                 <Image Grid.Row="2" Grid.Column="2" Aspect = "AspectFill"
-                       Source="{Binding GameModel.Board[8].CellState, Converter={StaticResource CellImageConverter}}"/>
+                       Source="{Binding GameModel.Board[8].CellState, Converter={StaticResource AvatarIdToImageConverter}}"/>
                 <Button Grid.Row="2" Grid.Column="2" Style="{StaticResource BoardButton}"
                         Command="{Binding SelectCellCommand}" CommandParameter="8" IsEnabled="{Binding BoardButtonsEnabled}"/>
             
