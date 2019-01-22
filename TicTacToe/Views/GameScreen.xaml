@@ -12,7 +12,7 @@
         <converters:EndGameDialogWinner x:Key="EndGameDialogWinner"/>
         
         <Style TargetType="Button" x:Key="BoardButton">
-            <Setter Property="FontSize" Value="64"/>
+            <Setter Property="FontSize" Value="58"/>
             <Setter Property="TextColor" Value="White"/>
             <Setter Property="FontFamily" Value="Arial"/>
         </Style>
@@ -23,26 +23,29 @@
            <Setter Property="VerticalTextAlignment" Value="Center"/>
         </Style>
         
-        <Style TargetType="Frame" x:Key="EndGameDialogs">
-            <Setter Property="OutlineColor" Value="Silver"/>
+        <Style TargetType="Frame" x:Key="DialogOuterFrame">
             <Setter Property="BackgroundColor" Value="#5b9aff"/>
             <Setter Property="Opacity" Value="0.75"/>
             <Setter Property="VerticalOptions" Value="FillAndExpand"/>
             <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         </Style>
-        <Style TargetType="StackLayout" x:Key="EndGameDialogsStackLayout">
+        <Style TargetType="Frame" x:Key="DialogInnerFrame">
+            <Setter Property="BackgroundColor" Value="transparent"/>
+            <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+            <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        </Style>
+        <Style TargetType="StackLayout" x:Key="DialogStackLayout">
             <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
             <Setter Property="HorizontalOptions" Value="Center"/>
             <Setter Property="Opacity" Value="1"/>
         </Style>
-        <Style TargetType="Label" x:Key="EndGameDialogsText">
-            <Setter Property="TextColor" Value="White"/>
-            <Setter Property="FontFamily" Value="Arial"/>
-            <Setter Property="FontSize" Value="42"/>
-            <Setter Property="HorizontalTextAlignment" Value="Center"/>
-            <Setter Property="FontAttributes" Value="Bold"/>
+        <Style TargetType="Label" x:Key="DialogText">
+           <Setter Property="FontSize" Value="22"/>
+           <Setter Property="TextColor" Value="White"/>
+           <Setter Property="HorizontalTextAlignment" Value="Center"/>
+           <Setter Property="VerticalTextAlignment" Value="Center"/>
         </Style>
-        <Style TargetType="Button" x:Key="EndGameDialogsButtons">
+        <Style TargetType="Button" x:Key="DialogButton">
             <Setter Property="HeightRequest" Value="55"/>
             <Setter Property="WidthRequest" Value="200"/>
             <Setter Property="VerticalOptions" Value="Center"/>
@@ -139,19 +142,22 @@
             
             </Grid>
             
-            <Frame Grid.RowSpan="3" IsVisible="{Binding IsGameWon}" Style="{StaticResource EndGameDialogs}">
-                <StackLayout Style="{StaticResource EndGameDialogsStackLayout}">
+            <Frame Grid.RowSpan="3" IsVisible="{Binding IsGameWon}" Style="{StaticResource DialogOuterFrame}"/>
+            <Frame Grid.RowSpan="3" IsVisible="{Binding IsGameWon}" Style="{StaticResource DialogInnerFrame}">
+                <StackLayout Style="{StaticResource DialogStackLayout}">
                     <Image Source="winner.png"/>
-                    <Label Text="{Binding GameWinner, Converter={StaticResource EndGameDialogWinner}}" Style="{StaticResource EndGameDialogsText}" />
-                    <Button Text="Play Again" Style="{StaticResource EndGameDialogsButtons}" Command="{Binding PlayAgainCommand}"/>
-                    <Button Text="Main Menu" Style="{StaticResource EndGameDialogsButtons}" Command="{Binding MainMenuCommand}"/>
+                    <Label Text="{Binding GameWinner, Converter={StaticResource EndGameDialogWinner}}" Style="{StaticResource DialogText}" />
+                    <Button Text="Play Again" Style="{StaticResource DialogButton}" Command="{Binding PlayAgainCommand}"/>
+                    <Button Text="Main Menu" Style="{StaticResource DialogButton}" Command="{Binding MainMenuCommand}"/>
                 </StackLayout>
             </Frame>
-            <Frame Grid.RowSpan="3" IsVisible="{Binding IsGameDraw}" Style="{StaticResource EndGameDialogs}">
-                <StackLayout Style="{StaticResource EndGameDialogsStackLayout}">
+            
+            <Frame Grid.RowSpan="3" IsVisible="{Binding IsGameDraw}" Style="{StaticResource DialogOuterFrame}"/>
+            <Frame Grid.RowSpan="3" IsVisible="{Binding IsGameDraw}" Style="{StaticResource DialogInnerFrame}">
+                <StackLayout Style="{StaticResource DialogStackLayout}">
                     <Image Source="draw.png"/>
-                    <Button Text="Play Again" Style="{StaticResource EndGameDialogsButtons}" Command="{Binding PlayAgainCommand}"/>
-                    <Button Text="Main Menu" Style="{StaticResource EndGameDialogsButtons}" Command="{Binding MainMenuCommand}"/>
+                    <Button Text="Play Again" Style="{StaticResource DialogButton}" Command="{Binding PlayAgainCommand}"/>
+                    <Button Text="Main Menu" Style="{StaticResource DialogButton}" Command="{Binding MainMenuCommand}"/>
                 </StackLayout>
             </Frame>
         </Grid>
