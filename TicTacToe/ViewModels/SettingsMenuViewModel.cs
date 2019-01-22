@@ -9,11 +9,13 @@ namespace TicTacToe.ViewModels
         #region Fields
 
         private AiDifficulty _chosenDifficulty;
+        private bool _showDifficultySelection;
 
         #endregion
 
         #region Properties
 
+        public Command ShowDifficultySelectionDialogCommand { get; set; }
         public Command ChangeDifficultyCommand { get; set; }
         public Command MainMenuCommand { get; set; }
 
@@ -30,6 +32,19 @@ namespace TicTacToe.ViewModels
             }
         }
 
+        /// <summary>
+        /// Whether to show difficulty selection dialog.
+        /// </summary>
+        public bool ShowDifficultySelection
+        {
+            get { return _showDifficultySelection; }
+            set
+            {
+                _showDifficultySelection = value;
+                NotifyPropertyChanged("ShowDifficultySelection");
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -37,9 +52,11 @@ namespace TicTacToe.ViewModels
         /// </summary>
         public SettingsMenuViewModel()
         {
+            ShowDifficultySelectionDialogCommand = new Command(ShowDifficultySelectionDialog);
             ChangeDifficultyCommand = new Command<string>(ChangeDifficulty);
             MainMenuCommand = new Command(ShowMainMenu);
             ChosenDifficulty = Program.GameManager.AiDifficulty;
+            ShowDifficultySelection = false;
         }
 
         #region Helper Methods
@@ -67,6 +84,7 @@ namespace TicTacToe.ViewModels
             }
 
             ChosenDifficulty = Program.GameManager.AiDifficulty;
+            ShowDifficultySelection = false;
         }
 
         /// <summary>
@@ -75,6 +93,14 @@ namespace TicTacToe.ViewModels
         private void ShowMainMenu()
         {
             Program.ReturnToMainMenu();
+        }
+
+        /// <summary>
+        /// Shows the difficulty selection dialog.
+        /// </summary>
+        private void ShowDifficultySelectionDialog()
+        {
+            ShowDifficultySelection = true;
         }
 
         #endregion

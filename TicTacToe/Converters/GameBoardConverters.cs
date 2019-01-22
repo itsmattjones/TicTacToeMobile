@@ -91,4 +91,17 @@ namespace TicTacToe.Converters
             throw new NotImplementedException();
         }
     }
+
+    public class CurrentPlayerTurnConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return string.Concat("Player ", value, "'s turn");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

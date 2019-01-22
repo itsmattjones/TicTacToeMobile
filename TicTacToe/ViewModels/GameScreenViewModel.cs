@@ -15,6 +15,7 @@ namespace TicTacToe.ViewModels
         private bool _isGameWon;
         private bool _isGameDraw;
         private int _gameWinner;
+        private int _currentTurnPlayerId;
 
         #endregion
 
@@ -89,6 +90,19 @@ namespace TicTacToe.ViewModels
             }
         }
 
+        /// <summary>
+        /// The Player ID of the current players turn.
+        /// </summary>
+        public int CurrentTurnPlayerId
+        {
+            get { return _currentTurnPlayerId; }
+            set
+            {
+                _currentTurnPlayerId = value;
+                NotifyPropertyChanged("CurrentTurnPlayerId");
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -100,6 +114,7 @@ namespace TicTacToe.ViewModels
             MainMenuCommand = new Command(OpenMainMenu);
             PlayAgainCommand = new Command(PlayAgain);
             BoardButtonsEnabled = true;
+            CurrentTurnPlayerId = 1;
         }
 
         #region Helper Methods
@@ -143,13 +158,16 @@ namespace TicTacToe.ViewModels
         private void UpdateGameStatus(bool isGameWon, bool isGameDraw)
         {
             IsGameWon = isGameWon;
+            int currentTurnPlayerId = GameModel.PlayerOne.IsPlayerTurn ? GameModel.PlayerOne.PlayerId : GameModel.PlayerTwo.PlayerId;
+
             if (IsGameWon)
-                GameWinner = GameModel.PlayerOne.IsPlayerTurn ? GameModel.PlayerOne.PlayerId : GameModel.PlayerTwo.PlayerId;
+                GameWinner = currentTurnPlayerId;
 
             if (!IsGameWon)
                 IsGameDraw = isGameDraw;
 
             BoardButtonsEnabled = !(IsGameWon || IsGameDraw);
+            CurrentTurnPlayerId = currentTurnPlayerId;
         }
 
         /// <summary>

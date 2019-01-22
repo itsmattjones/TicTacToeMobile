@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Threading;
 using TicTacToe.Models;
 using TicTacToe.Models.Player;
 
@@ -16,7 +17,7 @@ namespace TicTacToe
         /// <param name="gameModel">Game model.</param>
         /// <param name="chosenCell">Cell identifier.</param>
         /// <param name="gameIsWon">If set to true game is won.</param>
-        /// <param name="gameIsDraw">If set to true game is draw.</param>
+        /// <param name="gameIsDraw">If set to true game is  draw.</param>
         public GameModel TakePlayerTurn(GameModel gameModel, string chosenCell, out bool gameIsWon, out bool gameIsDraw)
         {
             var result = int.TryParse(chosenCell, out var cellId);
