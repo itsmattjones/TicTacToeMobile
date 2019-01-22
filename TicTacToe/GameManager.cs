@@ -10,6 +10,8 @@ namespace TicTacToe
     {
         public GameEngine GameEngine;
         public AiDifficulty AiDifficulty;
+        public int PlayerOneAvatar = 3;
+        public int PlayerTwoAvatar = 4;
 
         /// <summary>
         /// Creates a new multiplayer game.
@@ -22,8 +24,8 @@ namespace TicTacToe
             // Setup model for the game.
             var gameModel = new GameModel
             {
-                PlayerOne = new NormalPlayerModel { PlayerId = 1, IsPlayerTurn = true, PlayerAvatar = 1 },
-                PlayerTwo = new NormalPlayerModel{ PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2 },
+                PlayerOne = new NormalPlayerModel { PlayerId = 1, IsPlayerTurn = true, PlayerAvatar = PlayerOneAvatar },
+                PlayerTwo = new NormalPlayerModel{ PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = PlayerTwoAvatar },
                 Board = new List<CellModel>()
             };
 
@@ -47,8 +49,8 @@ namespace TicTacToe
             // Setup model for the game.
             var gameModel = new GameModel
             {
-                PlayerOne = new NormalPlayerModel { PlayerId = 1, IsPlayerTurn = true, PlayerAvatar = 1 },
-                PlayerTwo = new AiPlayerModel { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2, Difficulty = AiDifficulty },
+                PlayerOne = new NormalPlayerModel { PlayerId = 1, IsPlayerTurn = true, PlayerAvatar = PlayerOneAvatar },
+                PlayerTwo = new AiPlayerModel { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = PlayerTwoAvatar, Difficulty = AiDifficulty },
                 Board = new List<CellModel>()
             };
 

@@ -5,55 +5,32 @@ using Xamarin.Forms;
 namespace TicTacToe.Converters
 {
     /// <summary>
-    /// Converts the text shown on cells on the game board.
+    /// Converts the image shown on cells on the game board.
     /// </summary>
-    public class BoardCellTextConverter : IValueConverter
+    public class BoardCellImageConverter : IValueConverter
     {
-        private const string P1 = "X";
-        private const string P2 = "O";
+        private const string DefaultCell = "avatar_blank.png";
+        private const string Nought = "avatar_0.png";
+        private const string Cross = "avatar_x.png";
+        private const string Hotdog = "avatar_hotdog.png";
+        private const string Burger = "avatar_burger.png";
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             switch(value)
             {
                 case 0:
-                    return string.Empty;
+                    return DefaultCell;
                 case 1:
-                    return P1;
+                    return Nought;
                 case 2:
-                    return P2;
+                    return Cross;
+                case 3:
+                    return Hotdog;
+                case 4:
+                    return Burger;
                 default:
-                    return string.Empty;
-            }
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    /// <summary>
-    /// Converts the colour of the cells on the game board.
-    /// </summary>
-    public class BoardCellColourConverter : IValueConverter
-    {
-        private readonly Color _p1 = Color.FromHex("#33cc33");
-        private readonly Color _p2 = Color.FromHex("#ff471a");
-        private readonly Color _unknown = Color.FromHex("#ccffff");
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            switch (value)
-            {
-                case 0:
-                    return _unknown;
-                case 1:
-                    return _p1;
-                case 2:
-                    return _p2;
-                default:
-                    return _unknown;
+                    return DefaultCell;
             }
         }
 

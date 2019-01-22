@@ -163,5 +163,10 @@
     <BundleResource Include="Resources\draw.png" />
     <BundleResource Include="Resources\loser.png" />
     <BundleResource Include="Resources\winner.png" />
+    <BundleResource Include="Resources\avatar_0.png" />
+    <BundleResource Include="Resources\avatar_burger.png" />
+    <BundleResource Include="Resources\avatar_hotdog.png" />
+    <BundleResource Include="Resources\avatar_x.png" />
+    <BundleResource Include="Resources\avatar_blank.png" />
   </ItemGroup>
 </Project>

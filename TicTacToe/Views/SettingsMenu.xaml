@@ -103,8 +103,8 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.ColumnSpan="2" Text="Avatars" Style="{StaticResource SubTitle}"/>
-                <Button Grid.Row="1" Grid.Column="0" Text="[P1]" Style="{StaticResource SettingsButton}"/>
-                <Button Grid.Row="1" Grid.Column="1" Text="[P2]" Style="{StaticResource SettingsButton}"/>
+                <Button Grid.Row="1" Grid.Column="0" Text="P1" Style="{StaticResource SettingsButton}"/>
+                <Button Grid.Row="1" Grid.Column="1" Text="P2" Style="{StaticResource SettingsButton}"/>
             </Grid>
             
             <!-- Board Type Settings -->

@@ -87,6 +87,11 @@
     <AndroidResource Include="Resources\drawable\winner.png" />
     <AndroidResource Include="Resources\drawable\draw.png" />
     <AndroidResource Include="Resources\drawable\loser.png" />
+    <AndroidResource Include="Resources\drawable\avatar_0.png" />
+    <AndroidResource Include="Resources\drawable\avatar_burger.png" />
+    <AndroidResource Include="Resources\drawable\avatar_hotdog.png" />
+    <AndroidResource Include="Resources\drawable\avatar_x.png" />
+    <AndroidResource Include="Resources\drawable\avatar_blank.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
