@@ -45,8 +45,8 @@ namespace TicTacToe.Views
         {
             while (!cancellation.IsCancellationRequested)
             {
-                await element.RotateTo(15, 1200, Easing.Linear);
-                await element.RotateTo(-15, 1200, Easing.Linear);
+                await element.RotateTo(5, 1200, Easing.Linear);
+                await element.RotateTo(-5, 1200, Easing.Linear);
             }
         }
     }
