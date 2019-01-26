@@ -6,67 +6,170 @@
              NavigationPage.HasNavigationBar="False">
     
     <ContentPage.Resources>
+        <converters:AvatarIdToImageConverter x:Key="AvatarIdToImageConverter"/>
         <converters:EasyButtonColourConverter x:Key="EasyButtonColourConverter" />
         <converters:MediumButtonColourConverter x:Key="MediumButtonColourConverter" />
         <converters:HardButtonColourConverter x:Key="HardButtonColourConverter" />
         
         <Style x:Key="Title" TargetType="Label">
-           <Setter Property="FontSize" Value="48"/>
+           <Setter Property="FontSize" Value="35"/>
            <Setter Property="TextColor" Value="White"/>
            <Setter Property="HorizontalTextAlignment" Value="Center"/>
            <Setter Property="VerticalTextAlignment" Value="Center"/>
         </Style>
         <Style x:Key="SubTitle" TargetType="Label">
-           <Setter Property="FontSize" Value="35"/>
+           <Setter Property="FontSize" Value="22"/>
            <Setter Property="TextColor" Value="White"/>
            <Setter Property="HorizontalTextAlignment" Value="Center"/>
            <Setter Property="VerticalTextAlignment" Value="Center"/>
         </Style>
         <Style x:Key="SettingsButton" TargetType="Button">
             <Setter Property="Padding" Value="0,0,0,0"/>
-            <Setter Property="Margin" Value="40,0,40,0"/>
+            <Setter Property="Margin" Value="20,0,20,5"/>
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="TextColor" Value="White"/>
             <Setter Property="BackgroundColor" Value="#ffba1c"/>
             <Setter Property="BorderColor" Value="#ffffff"/>
-            <Setter Property="BorderRadius" Value="40"/>
+            <Setter Property="BorderRadius" Value="20"/>
             <Setter Property="BorderWidth" Value="2"/>
             <Setter Property="FontFamily" Value="Arial"/>
+        </Style>
+        
+        
+        <Style TargetType="Frame" x:Key="DialogOuterFrame">
+            <Setter Property="BackgroundColor" Value="#5b9aff"/>
+            <Setter Property="Opacity" Value="0.75"/>
+            <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+            <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        </Style>
+        <Style TargetType="Frame" x:Key="DialogInnerFrame">
+            <Setter Property="BackgroundColor" Value="transparent"/>
+            <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+            <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        </Style>
+        <Style TargetType="StackLayout" x:Key="DialogStackLayout">
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="Opacity" Value="1"/>
+        </Style>
+        <Style TargetType="Label" x:Key="DialogText">
+           <Setter Property="FontSize" Value="22"/>
+           <Setter Property="TextColor" Value="White"/>
+           <Setter Property="HorizontalTextAlignment" Value="Center"/>
+           <Setter Property="VerticalTextAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Button" x:Key="DialogButton">
+            <Setter Property="HeightRequest" Value="55"/>
+            <Setter Property="WidthRequest" Value="200"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="BackgroundColor" Value="#ffba1c"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="BorderColor" Value="#ffffff"/>
+            <Setter Property="BorderRadius" Value="20"/>
+            <Setter Property="BorderWidth" Value="2"/>
+            <Setter Property="Margin" Value="20,5,20,5"/>
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid BackgroundColor="#3eb4ef">
             <Grid.RowDefinitions>
-                <RowDefinition Height="15*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="30*"/>
+                <RowDefinition Height="25*"/>
+                <RowDefinition Height="32*"/>
+                <RowDefinition Height="32*"/>
                 <RowDefinition Height="10*"/>
             </Grid.RowDefinitions>
-        
+            
+            <!-- Difficulty Settings -->
             <Grid Grid.Row="0">
-                <Label Text="Difficulty" Style="{StaticResource SubTitle}"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Text="Difficulty" Style="{StaticResource SubTitle}"/>
+                <Button Grid.Row="1" Text="{Binding ChosenDifficulty}" Style="{StaticResource SettingsButton}" 
+                        Command="{Binding ShowDifficultySelectionDialogCommand}"/>
             </Grid>
             
+            <!-- Player Avatar Settings -->
             <Grid Grid.Row="1">
-                <Button Text="Easy" Style="{StaticResource SettingsButton}" Command="{Binding ChangeDifficultyCommand}" CommandParameter="easy"
-                        BackgroundColor="{Binding ChosenDifficulty, Converter={StaticResource EasyButtonColourConverter}}"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height="70*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.ColumnSpan="2" Text="Avatars" Style="{StaticResource SubTitle}"/>
+                <Image Grid.Row="1" Grid.Column="0" Source="{Binding PlayerOneAvatar, Converter={StaticResource AvatarIdToImageConverter}}"/>
+                <Button Grid.Row="1" Grid.Column="0" Text="P1" BorderColor="Transparent" BackgroundColor="Transparent"
+                        Style="{StaticResource SettingsButton}" Command="{Binding ShowP1AvatarSelectionDialogCommand}"/>
+                <Image Grid.Row="1" Grid.Column="1" Source="{Binding PlayerTwoAvatar, Converter={StaticResource AvatarIdToImageConverter}}"/>
+                <Button Grid.Row="1" Grid.Column="1" Text="P2" BorderColor="Transparent" BackgroundColor="Transparent" 
+                        Style="{StaticResource SettingsButton}" Command="{Binding ShowP2AvatarSelectionDialogCommand}"/>
             </Grid>
+      
+            <!-- Main Menu Button -->
+            <Button Grid.Row="3" Text="Main Menu" Style="{StaticResource SettingsButton}" Command="{Binding MainMenuCommand}"/>
             
-            <Grid Grid.Row="2">
-                <Button Text="Medium" Style="{StaticResource SettingsButton}" Command="{Binding ChangeDifficultyCommand}" CommandParameter="medium"
-                        BackgroundColor="{Binding ChosenDifficulty, Converter={StaticResource MediumButtonColourConverter}}"/>
-            </Grid>
+            <!-- Difficulty Selection Dialog -->
+            <Frame Grid.RowSpan="4" IsVisible="{Binding ShowDifficultySelection}" Style="{StaticResource DialogOuterFrame}"/>
+            <Frame Grid.RowSpan="4" IsVisible="{Binding ShowDifficultySelection}" Style="{StaticResource DialogInnerFrame}">
+                <StackLayout Style="{StaticResource DialogStackLayout}">
+                    <Label  Text="Select Difficulty" Style="{StaticResource DialogText}"/>
+                    <Button Text="Easy" Style="{StaticResource DialogButton}" 
+                            Command="{Binding ChangeDifficultyCommand}" CommandParameter="easy"/>
+                    <Button Text="Medium" Style="{StaticResource DialogButton}" 
+                            Command="{Binding ChangeDifficultyCommand}" CommandParameter="medium"/>
+                    <Button Text="Hard" Style="{StaticResource DialogButton}"
+                            Command="{Binding ChangeDifficultyCommand}" CommandParameter="hard"/>
+                </StackLayout>
+            </Frame>
             
-            <Grid Grid.Row="3">
-                <Button Text="Hard" Style="{StaticResource SettingsButton}" Command="{Binding ChangeDifficultyCommand}" CommandParameter="hard"
-                        BackgroundColor="{Binding ChosenDifficulty, Converter={StaticResource HardButtonColourConverter}}"/>
-            </Grid>
+            <!-- P1 Avatar selection dialog -->
+            <Frame Grid.RowSpan="4" IsVisible="{Binding ShowPlayerOneAvatarSelection}" Style="{StaticResource DialogOuterFrame}"/>
+            <Frame Grid.RowSpan="4" IsVisible="{Binding ShowPlayerOneAvatarSelection}" Style="{StaticResource DialogInnerFrame}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.ColumnSpan="2" Text="Select Avatar" Style="{StaticResource DialogText}"/>
+                    <Image Grid.Row="1" Grid.Column="0" Source="avatar_p1_0.png"/>
+                    <Button Grid.Row="1" Grid.Column="0" BackgroundColor="Transparent" Command="{Binding ChangePlayerOneAvatarCommand}" CommandParameter="1"/>
+                    <Image Grid.Row="1" Grid.Column="1" Source="avatar_p1_burger.png"/>
+                    <Button Grid.Row="1" Grid.Column="1" BackgroundColor="Transparent" Command="{Binding ChangePlayerOneAvatarCommand}" CommandParameter="4"/>
+                </Grid>
+            </Frame>
             
-            <Grid Grid.Row="5">
-                <Button Text="Main Menu" Style="{StaticResource SettingsButton}" Command="{Binding MainMenuCommand}"/>
-            </Grid>
+            <!-- P2 Avatar selection dialog -->
+            <Frame Grid.RowSpan="4" IsVisible="{Binding ShowPlayerTwoAvatarSelection}" Style="{StaticResource DialogOuterFrame}"/>
+            <Frame Grid.RowSpan="4" IsVisible="{Binding ShowPlayerTwoAvatarSelection}" Style="{StaticResource DialogInnerFrame}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.ColumnSpan="2" Text="Select Avatar" Style="{StaticResource DialogText}"/>
+                    <Image Grid.Row="1" Grid.Column="0" Source="avatar_p2_x.png"/>
+                    <Button Grid.Row="1" Grid.Column="0" BackgroundColor="Transparent" Command="{Binding ChangePlayerTwoAvatarCommand}" CommandParameter="2"/>
+                    <Image Grid.Row="1" Grid.Column="1" Source="avatar_p2_hotdog.png"/>
+                    <Button Grid.Row="1" Grid.Column="1" BackgroundColor="Transparent" Command="{Binding ChangePlayerTwoAvatarCommand}" CommandParameter="3"/>
+                </Grid>
+            </Frame>
        </Grid>
     </ContentPage.Content>
 </ContentPage>

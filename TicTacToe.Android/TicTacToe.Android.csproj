@@ -15,12 +15,11 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <ReleaseVersion>1.2</ReleaseVersion>
+    <ReleaseVersion>1.4</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -84,10 +83,15 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
-    <AndroidResource Include="Resources\drawable\tictactoe.png" />
     <AndroidResource Include="Resources\drawable\winner.png" />
     <AndroidResource Include="Resources\drawable\draw.png" />
     <AndroidResource Include="Resources\drawable\loser.png" />
+    <AndroidResource Include="Resources\drawable\avatar_p1_0.png" />
+    <AndroidResource Include="Resources\drawable\avatar_p1_burger.png" />
+    <AndroidResource Include="Resources\drawable\avatar_p2_hotdog.png" />
+    <AndroidResource Include="Resources\drawable\avatar_p2_x.png" />
+    <AndroidResource Include="Resources\drawable\avatar_blank.png" />
+    <AndroidResource Include="Resources\drawable\logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
