@@ -159,7 +159,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\tictactoe.png" />
     <BundleResource Include="Resources\draw.png" />
     <BundleResource Include="Resources\loser.png" />
     <BundleResource Include="Resources\winner.png" />
