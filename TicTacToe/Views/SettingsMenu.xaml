@@ -7,9 +7,6 @@
     
     <ContentPage.Resources>
         <converters:AvatarIdToImageConverter x:Key="AvatarIdToImageConverter"/>
-        <converters:EasyButtonColourConverter x:Key="EasyButtonColourConverter" />
-        <converters:MediumButtonColourConverter x:Key="MediumButtonColourConverter" />
-        <converters:HardButtonColourConverter x:Key="HardButtonColourConverter" />
         
         <Style x:Key="Title" TargetType="Label">
            <Setter Property="FontSize" Value="35"/>
