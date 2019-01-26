@@ -15,7 +15,7 @@
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <ReleaseVersion>1.2</ReleaseVersion>
+    <ReleaseVersion>1.4</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -168,5 +168,6 @@
     <BundleResource Include="Resources\avatar_p2_hotdog.png" />
     <BundleResource Include="Resources\avatar_p2_x.png" />
     <BundleResource Include="Resources\avatar_blank.png" />
+    <BundleResource Include="Resources\logo.png" />
   </ItemGroup>
 </Project>
