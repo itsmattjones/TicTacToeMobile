@@ -111,17 +111,7 @@
                 <Button Grid.Row="1" Grid.Column="1" Text="P2" BorderColor="Transparent" BackgroundColor="Transparent" 
                         Style="{StaticResource SettingsButton}" Command="{Binding ShowP2AvatarSelectionDialogCommand}"/>
             </Grid>
-            
-            <!-- Board Type Settings -->
-            <Grid Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30*"/>
-                    <RowDefinition Height="70*"/>
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0" Text="Board Type" Style="{StaticResource SubTitle}"/>
-                <Button Grid.Row="1" Text="[Board]" Style="{StaticResource SettingsButton}"/>
-            </Grid>
-            
+      
             <!-- Main Menu Button -->
             <Button Grid.Row="3" Text="Main Menu" Style="{StaticResource SettingsButton}" Command="{Binding MainMenuCommand}"/>
             
