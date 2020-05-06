@@ -1,48 +1,34 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using TicTacToe.Models;
-using TicTacToe.Models.Player;
+using TicTacToe.Services;
 using Xamarin.Forms;
 
 namespace TicTacToe.ViewModels
 {
     public class GameScreenViewModel : INotifyPropertyChanged
     {
+        private IGameEngine _gameEngine;
+        private INavigationService _navigationService;
 
-        #region Fields
-
-        private GameModel _gameModel;
         private bool _boardButtonsEnabled;
         private bool _isGameWon;
         private bool _isGameDraw;
         private int _gameWinner;
 
-        #endregion
-
-        #region Properties
-
         public Command SelectCellCommand { get; set; }
         public Command PlayAgainCommand { get; set; }
         public Command MainMenuCommand { get; set; }
 
-        /// <summary>
-        /// Gets or sets the game model.
-        /// </summary>
-        public GameModel GameModel
+        public List<IBoardCell> Board
         {
-            get { return _gameModel; }
-            set
-            {
-                _gameModel = value;
-                NotifyPropertyChanged("GameModel");
-            }
+            get => _gameEngine.Board;
         }
 
-        /// <summary>
-        /// Game won state.
-        /// </summary>
         public bool IsGameWon 
         {
-            get { return _isGameWon; }
+            get =>  _isGameWon;
             set 
             {
                 _isGameWon = value;
@@ -50,12 +36,9 @@ namespace TicTacToe.ViewModels
             }
         }
 
-        /// <summary>
-        /// Game draw state.
-        /// </summary>
         public bool IsGameDraw
         {
-            get { return _isGameDraw; }
+            get => _isGameDraw;
             set
             {
                 _isGameDraw = value;
@@ -63,25 +46,19 @@ namespace TicTacToe.ViewModels
             }
         }
 
-        /// <summary>
-        /// Whether the board buttons are enabled/disabled.
-        /// </summary>
         public bool BoardButtonsEnabled
         {
-            get { return _boardButtonsEnabled; }
+            get => _boardButtonsEnabled;
             set
             {
                 _boardButtonsEnabled = value;
                 NotifyPropertyChanged("BoardButtonsEnabled");
             }
         }
-
-        /// <summary>
-        /// The PlayerID of the game winner.
-        /// </summary>
+        
         public int GameWinner
         {
-            get { return _gameWinner; }
+            get => _gameWinner;
             set
             {
                 _gameWinner = value;
@@ -89,103 +66,63 @@ namespace TicTacToe.ViewModels
             }
         }
 
-        #endregion
-
-        /// <summary>
-        /// Initializes a new instance of the GameScreenViewModel class.
-        /// </summary>
-        public GameScreenViewModel()
+        public GameScreenViewModel(INavigationService navigationService, IGameEngine gameEngine)
         {
+            _navigationService = navigationService;
+            _gameEngine = gameEngine;
+
             SelectCellCommand = new Command<string>(SelectCell);
             MainMenuCommand = new Command(OpenMainMenu);
             PlayAgainCommand = new Command(PlayAgain);
+
             BoardButtonsEnabled = true;
         }
 
-        #region Helper Methods
-
-        /// <summary>
-        /// Selects the cell for a player.
-        /// </summary>
-        /// <param name="cellId">Cell identifier.</param>
         private void SelectCell(string cellId)
         {
-            GameModel = Program.GameManager.GameEngine.TakePlayerTurn(GameModel, cellId, out bool isGameWon, out bool isGameDraw);
-
-            UpdateGameStatus(isGameWon, isGameDraw);
-
-            if (IsGameWon || isGameDraw)
+            if (!int.TryParse(cellId, out var cell) || cellId == string.Empty)
                 return;
 
-            // If next player is AI make it take its turn.
-            if (Program.GameManager.GameEngine.GetTurnPlayer(GameModel).PlayerType == PlayerType.Ai)
-                SelectCellAi();
+            var tickResult = _gameEngine.TickPlayerTurn(cell);
+
+            // If game is finished end.
+            UpdateGameStatus(tickResult);
+            if (tickResult.GameFinished)
+                return;
+
+            // If the games multiplayer, make AI players take their turns.
+            while (_gameEngine.Players.Where(m => m.IsPlayerTurn == true).FirstOrDefault().PlayerType == PlayerType.Ai)
+                UpdateGameStatus(_gameEngine.TickAIPlayerTurn());
         }
 
-        /// <summary>
-        /// Selects the cell for a AI player.
-        /// </summary>
-        private void SelectCellAi()
+        private void UpdateGameStatus(EngineTickResult engineTick)
         {
-            GameModel = Program.GameManager.GameEngine.TakeAiTurn(GameModel, out bool isGameWonAi, out bool isGameDrawAi);
-
-            UpdateGameStatus(isGameWonAi, isGameDrawAi);
+            if (engineTick.GameFinished && engineTick.Results.GameHasWinner)
+            {
+                IsGameWon = true;
+                GameWinner = engineTick.Results.Winner.PlayerId;
+            }
+            else if(engineTick.GameFinished && !engineTick.Results.GameHasWinner)
+                IsGameDraw = true;
 
             BoardButtonsEnabled = !(IsGameWon || IsGameDraw);
         }
 
-        /// <summary>
-        /// Updates the game status including IsGameWon, IsGameDraw and
-        /// whether or not the game board buttons are enabled.
-        /// </summary>
-        /// <param name="isGameWon">If set to true is game won.</param>
-        /// <param name="isGameDraw">If set to true is game draw.</param>
-        private void UpdateGameStatus(bool isGameWon, bool isGameDraw)
-        {
-            IsGameWon = isGameWon;
-            if (IsGameWon)
-                GameWinner = GameModel.PlayerOne.IsPlayerTurn ? GameModel.PlayerOne.PlayerId : GameModel.PlayerTwo.PlayerId;
-
-            if (!IsGameWon)
-                IsGameDraw = isGameDraw;
-
-            BoardButtonsEnabled = !(IsGameWon || IsGameDraw);
-        }
-
-        /// <summary>
-        /// Opens the main menu.
-        /// </summary>
         private void OpenMainMenu()
         {
-            Program.ReturnToMainMenu();
+            _navigationService.GoBack();
         }
 
-        /// <summary>
-        /// Starts a new game, the same as the current.
-        /// </summary>
         private void PlayAgain()
         {
-            if(GameModel.PlayerOne.PlayerType == PlayerType.Ai || GameModel.PlayerTwo.PlayerType == PlayerType.Ai)
-            {
-                Program.GameManager.CreateSingleplayerGame();
-            }
-            else
-            {
-                Program.GameManager.CreateMultiplayerGame();
-            }
         }
-
-        #endregion
 
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

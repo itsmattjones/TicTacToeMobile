@@ -1,29 +1,43 @@
-﻿using TicTacToe.Models.Player;
-using TicTacToe.ViewModels;
+﻿using TicTacToe.ViewModels;
 using TicTacToe.Views;
+using TicTacToe.Services;
 using Xamarin.Forms;
+using SimpleInjector;
 
 namespace TicTacToe
 {
-    public class Program
+    static class Program
     {
-        public static GameManager GameManager;
+        static readonly Container container; 
 
-        public Program()
+        static Program()
         {
-            GameManager = new GameManager { AiDifficulty = AiDifficulty.Medium };
-            
-            ReturnToMainMenu();
+            container = new Container();
+
+            container.Register<INavigationService, NavigationService>();
+            container.Register<IGameEngine, GameEngine>();
+
+            container.Register<MainMenu>();
+            container.Register<MainMenuViewModel>();
+
+            container.Register<SettingsMenu>();
+            container.Register<SettingsMenuViewModel>();
+
+            container.Register<GameScreen>();
+            container.Register<GameScreenViewModel>();
+
+            container.Verify();
         }
 
-        public static void ReturnToMainMenu()
+        static void Main(string[] args)
         {
-            Application.Current.MainPage = new NavigationPage(new MainMenu(new MainMenuViewModel()));
-        }
+            var navigationService = container.GetInstance<NavigationService>();
 
-        public static void ShowSettingsMenu()
-        {
-            Application.Current.MainPage = new NavigationPage(new SettingsMenu(new SettingsMenuViewModel()));
+            navigationService.Configure("MainMenu", typeof(Views.MainMenu));
+            navigationService.Configure("SettingsMenu", typeof(Views.SettingsMenu));
+            navigationService.Configure("GameScreen", typeof(Views.GameScreen));
+
+            Application.Current.MainPage = navigationService.SetRootPage("MainMenu");
         }
     }
 }

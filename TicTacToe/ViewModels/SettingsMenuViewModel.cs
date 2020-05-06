@@ -1,28 +1,19 @@
 ﻿using System.ComponentModel;
-using TicTacToe.Models.Player;
+using TicTacToe.Models;
 using Xamarin.Forms;
 
 namespace TicTacToe.ViewModels
 {
     public class SettingsMenuViewModel : INotifyPropertyChanged
     {
-        #region Fields
-
         private AiDifficulty _chosenDifficulty;
-
-        #endregion
-
-        #region Properties
 
         public Command ChangeDifficultyCommand { get; set; }
         public Command MainMenuCommand { get; set; }
 
-        /// <summary>
-        /// The chosen game difficulty.
-        /// </summary>
         public AiDifficulty ChosenDifficulty
         {
-            get { return _chosenDifficulty; }
+            get => _chosenDifficulty;
             set
             {
                 _chosenDifficulty = value;
@@ -30,66 +21,26 @@ namespace TicTacToe.ViewModels
             }
         }
 
-        #endregion
-
-        /// <summary>
-        /// Initializes a new instance of the SettingsMenuViewModel class.
-        /// </summary>
         public SettingsMenuViewModel()
         {
             ChangeDifficultyCommand = new Command<string>(ChangeDifficulty);
             MainMenuCommand = new Command(ShowMainMenu);
-            ChosenDifficulty = Program.GameManager.AiDifficulty;
         }
 
-        #region Helper Methods
-
-        /// <summary>
-        /// Changes the difficulty.
-        /// </summary>
-        /// <param name="difficultyType">Difficulty.</param>
         private void ChangeDifficulty(string difficultyType)
         {
-            if (string.IsNullOrEmpty(difficultyType))
-                return;
-
-            switch(difficultyType)
-            {
-                case "easy":
-                    Program.GameManager.AiDifficulty = AiDifficulty.Easy;
-                    break;
-                case "medium":
-                    Program.GameManager.AiDifficulty = AiDifficulty.Medium;
-                    break;
-                case "hard":
-                    Program.GameManager.AiDifficulty = AiDifficulty.Hard;
-                    break;
-            }
-
-            ChosenDifficulty = Program.GameManager.AiDifficulty;
         }
 
-        /// <summary>
-        /// Shows the main menu.
-        /// </summary>
         private void ShowMainMenu()
         {
-            Program.ReturnToMainMenu();
         }
 
-        #endregion
-
         #region INotifyPropertyChanged
-
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
         #endregion
     }
 }
