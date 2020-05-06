@@ -1,6 +1,6 @@
-﻿namespace TicTacToe.Models.Player
+﻿namespace TicTacToe.Models
 {
-    public class NormalPlayerModel : IPlayerModel
+    public class Player : IPlayer
     {
         public int PlayerId { get; set; }
 

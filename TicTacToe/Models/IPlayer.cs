@@ -1,4 +1,4 @@
-﻿namespace TicTacToe.Models.Player
+﻿namespace TicTacToe.Models
 {
     public enum PlayerType 
     {
@@ -13,7 +13,7 @@
         Hard
     }
 
-    public interface IPlayerModel
+    public interface IPlayer
     {
         /// <summary>
         /// Gets or sets the player identifier.

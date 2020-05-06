@@ -1,37 +1,34 @@
 using System.ComponentModel;
+using TicTacToe.Services;
 using Xamarin.Forms;
 
 namespace TicTacToe.ViewModels
 {
     public class MainMenuViewModel : INotifyPropertyChanged
     {
-
-        #region Properties
+        private INavigationService _navigationService;
 
         public Command SingleplayerCmd { get; set; }
         public Command MultiplayerCmd { get; set; }
         public Command SettingsCmd { get; set; }
 
-        #endregion
-
         /// <summary>
         /// Initializes a new instance of the MainMenuViewModel class.
         /// </summary>
-        public MainMenuViewModel()
+        public MainMenuViewModel(INavigationService navigationService)
         {
+            _navigationService = navigationService;
+
             SingleplayerCmd = new Command(CreateSingleplayer);
             MultiplayerCmd = new Command(CreateMultiplayer);
             SettingsCmd = new Command(CreateSettings);
         }
-
-        #region Helper Methods
 
         /// <summary>
         /// Creates a singleplayer game.
         /// </summary>
         private void CreateSingleplayer() 
         {
-            Program.GameManager.CreateSingleplayerGame();
         }
 
         /// <summary>
@@ -39,7 +36,6 @@ namespace TicTacToe.ViewModels
         /// </summary>
         private void CreateMultiplayer() 
         { 
-            Program.GameManager.CreateMultiplayerGame();
         }
 
         /// <summary>
@@ -47,22 +43,14 @@ namespace TicTacToe.ViewModels
         /// </summary>
         private void CreateSettings() 
         {
-            Program.ShowSettingsMenu();
         }
 
-        #endregion
-
         #region INotifyPropertyChanged
-
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
         #endregion
     }
 }

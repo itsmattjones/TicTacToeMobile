@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using TicTacToe.Models.Player;
+using TicTacToe.Models;
 using Xamarin.Forms;
 
 namespace TicTacToe.Converters
