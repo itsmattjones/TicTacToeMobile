@@ -122,7 +122,8 @@ namespace TicTacToe.ViewModels
             _navigationService.GoBack();
 
             var newGameEngine = _gameEngine.GameType == GameType.Singleplayer ?
-                new GameEngine(GameType.Singleplayer) : new GameEngine(GameType.Multiplayer);
+                new GameEngine(GameType.Singleplayer, _gameEngine.AiDifficulty) : 
+	        	new GameEngine(GameType.Multiplayer, _gameEngine.AiDifficulty);
 
             _gameEngine = newGameEngine;
             RaisePropertyChanged(nameof(Board));
@@ -135,7 +136,8 @@ namespace TicTacToe.ViewModels
         private void PlayAgain()
         {
             var newGameEngine = _gameEngine.GameType == GameType.Singleplayer ? 
-		        new GameEngine(GameType.Singleplayer) : new GameEngine(GameType.Multiplayer);
+		        new GameEngine(GameType.Singleplayer, _gameEngine.AiDifficulty) : 
+		        new GameEngine(GameType.Multiplayer, _gameEngine.AiDifficulty);
 
             _gameEngine = newGameEngine;
             RaisePropertyChanged(nameof(Board));
