@@ -16,6 +16,13 @@ namespace TicTacToe.Infrastructure
         public GameResults Results;
     }
 
+    public enum AiDifficulty
+    {
+        Easy,
+        Medium,
+        Hard
+    }
+
     public enum GameType
     {
         Singleplayer = 0,
