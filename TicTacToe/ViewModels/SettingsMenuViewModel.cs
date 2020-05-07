@@ -1,19 +1,17 @@
 ﻿using GalaSoft.MvvmLight;
-using TicTacToe.Infrastructure.Enums;
 using TicTacToe.Infrastructure.Services;
-using TicTacToe.Models;
+using TicTacToe.Infrastructure;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace TicTacToe.ViewModels
 {
     public class SettingsMenuViewModel : ViewModelBase
     {
+        private readonly INavigationService _navigationService;
+
         public Command ChangeDifficultyCommand { get; set; }
         public Command MainMenuCommand { get; set; }
-
-        private readonly INavigationService _navigationService;
-        public AiDifficulty ChosenDifficulty { get; set; }
-        public string NavigationPath { get; }
 
         public SettingsMenuViewModel(INavigationService navigationService)
         {
@@ -23,8 +21,38 @@ namespace TicTacToe.ViewModels
             MainMenuCommand = new Command(ShowMainMenu);
         }
 
+        public AiDifficulty ChosenDifficulty 
+	    {
+            get
+            {
+                switch (Preferences.Get("AiDifficulty", "medium"))
+                {
+                    case "easy": return AiDifficulty.Easy; 
+                    case "medium": return AiDifficulty.Medium; 
+                    case "hard": return AiDifficulty.Hard;
+                    default: return AiDifficulty.Medium;
+		        }
+	        }
+            set 
+	        {
+                switch (value)
+                {
+                    case AiDifficulty.Easy: Preferences.Set("AiDifficulty", "easy"); break;
+                    case AiDifficulty.Medium: Preferences.Set("AiDifficulty", "medium"); break;
+                    case AiDifficulty.Hard: Preferences.Set("AiDifficulty", "hard"); break; 
+		        }
+                RaisePropertyChanged();
+	        } 
+	    }
+
         private void ChangeDifficulty(string difficultyType)
         {
+            switch (difficultyType)
+	        {
+                case "easy": ChosenDifficulty = AiDifficulty.Easy; break; 
+                case "medium": ChosenDifficulty = AiDifficulty.Medium; break;
+                case "hard": ChosenDifficulty = AiDifficulty.Hard; break;
+	        }
         }
 
         private void ShowMainMenu()

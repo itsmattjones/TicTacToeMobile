@@ -6,13 +6,6 @@
         Ai
     }
 
-    public enum AiDifficulty
-    {
-        Easy,
-        Medium,
-        Hard
-    }
-
     public interface IPlayer
     {
         /// <summary>
@@ -38,13 +31,6 @@
         /// </summary>
         /// <value>The player avatar.</value>
         int PlayerAvatar { get; set; }
-
-        /// <summary>
-        /// Gets or sets the difficulty of the player if the player
-        /// is an AI player.
-        /// </summary>
-        /// <value>The AI difficulty.</value>
-        AiDifficulty Difficulty { get; set; }
         
         /// <summary>
         /// Gets or updates the amount of turns the player has taken.
