@@ -5,9 +5,9 @@ namespace TicTacToe.Views
 {
     public partial class SettingsMenu : ContentPage
     {
-        public SettingsMenu(SettingsMenuViewModel settingsViewModel)
+        public SettingsMenu()
         {
-            BindingContext = settingsViewModel;
+            BindingContext = App.Locator.SettingsMenuViewModel;
             InitializeComponent();
         }
     }

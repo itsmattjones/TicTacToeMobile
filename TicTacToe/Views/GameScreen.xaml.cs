@@ -5,9 +5,9 @@ namespace TicTacToe.Views
 {
     public partial class GameScreen : ContentPage
     {
-        public GameScreen(GameScreenViewModel gameScreenViewModel)
+        public GameScreen()
         {
-            BindingContext = gameScreenViewModel;
+            BindingContext = App.Locator.GameScreenViewModel;
             InitializeComponent();
         }
     }
