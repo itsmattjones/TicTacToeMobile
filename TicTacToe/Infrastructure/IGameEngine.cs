@@ -34,6 +34,7 @@ namespace TicTacToe.Infrastructure
         GameType GameType { get; }
         List<IBoardCell> Board { get; }
         List<IPlayer> Players { get; }
+        AiDifficulty AiDifficulty { get; }
 
         EngineTickResult TickPlayerTurn(int chosenCell);
         EngineTickResult TickAIPlayerTurn();
