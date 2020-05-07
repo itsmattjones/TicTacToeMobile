@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using TicTacToe.Models;
 using Xamarin.Forms;
 
 namespace TicTacToe.Converters
@@ -16,11 +17,9 @@ namespace TicTacToe.Converters
         {
             switch(value)
             {
-                case 0:
-                    return string.Empty;
-                case 1:
+                case CellState.TakenByPlayer1:
                     return P1;
-                case 2:
+                case CellState.TakenByPlayer2:
                     return P2;
                 default:
                     return string.Empty;
@@ -46,11 +45,9 @@ namespace TicTacToe.Converters
         {
             switch (value)
             {
-                case 0:
-                    return _unknown;
-                case 1:
+                case CellState.TakenByPlayer1:
                     return _p1;
-                case 2:
+                case CellState.TakenByPlayer2:
                     return _p2;
                 default:
                     return _unknown;

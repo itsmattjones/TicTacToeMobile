@@ -1,19 +1,24 @@
-﻿using System.ComponentModel;
+﻿using GalaSoft.MvvmLight;
+using TicTacToe.Infrastructure.Enums;
+using TicTacToe.Infrastructure.Services;
 using TicTacToe.Models;
 using Xamarin.Forms;
 
 namespace TicTacToe.ViewModels
 {
-    public class SettingsMenuViewModel : ISettingsMenuViewModel, INotifyPropertyChanged
+    public class SettingsMenuViewModel : ViewModelBase
     {
         public Command ChangeDifficultyCommand { get; set; }
         public Command MainMenuCommand { get; set; }
 
+        private readonly INavigationService _navigationService;
         public AiDifficulty ChosenDifficulty { get; set; }
         public string NavigationPath { get; }
 
-        public SettingsMenuViewModel()
+        public SettingsMenuViewModel(INavigationService navigationService)
         {
+            _navigationService = navigationService;
+
             ChangeDifficultyCommand = new Command<string>(ChangeDifficulty);
             MainMenuCommand = new Command(ShowMainMenu);
         }
@@ -24,16 +29,7 @@ namespace TicTacToe.ViewModels
 
         private void ShowMainMenu()
         {
+            _navigationService.GoBack();
         }
-
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }
