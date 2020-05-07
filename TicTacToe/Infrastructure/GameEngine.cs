@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Models;
+using Xamarin.Essentials;
 
 namespace TicTacToe.Infrastructure
 {
@@ -19,7 +20,7 @@ namespace TicTacToe.Infrastructure
 
             Players = new List<IPlayer>();
             Players.Add(new Player { PlayerId = 1, IsPlayerTurn = true, PlayerAvatar = 1 });
-            Players.Add(new Player { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2, PlayerType = PlayerType.Ai, Difficulty = AiDifficulty.Medium });
+            Players.Add(new Player { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2, PlayerType = PlayerType.Ai });
 
             if (gameType == GameType.Multiplayer)
                 Players[1].PlayerType = PlayerType.Normal;
@@ -40,7 +41,7 @@ namespace TicTacToe.Infrastructure
 
             // Make selection based on difficulty.
             int cell;
-            switch (aiPlayer.Difficulty)
+            switch (GetAiDifficulty())
             {
                 case AiDifficulty.Easy:
                     cell = EasyAiTurn(Board);
@@ -249,6 +250,21 @@ namespace TicTacToe.Infrastructure
                 }
             }
             return solutions;
+        }
+
+        private AiDifficulty GetAiDifficulty()
+        {
+            switch (Preferences.Get("AiDifficulty", "medium"))
+            {
+                case "easy":
+                    return AiDifficulty.Easy;
+                case "medium":
+                    return AiDifficulty.Medium;
+                case "hard":
+                    return AiDifficulty.Hard;
+                default: // Default to medium
+                    return AiDifficulty.Medium;
+            }
         }
     }
 }
