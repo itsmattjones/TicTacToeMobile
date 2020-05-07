@@ -1,13 +1,11 @@
 using System.ComponentModel;
-using TicTacToe.Services;
 using Xamarin.Forms;
+using TicTacToe.Services;
 
 namespace TicTacToe.ViewModels
 {
-    public class MainMenuViewModel : INotifyPropertyChanged
+    public class MainMenuViewModel : IMainMenuViewModel, INotifyPropertyChanged
     {
-        private INavigationService _navigationService;
-
         public Command SingleplayerCmd { get; set; }
         public Command MultiplayerCmd { get; set; }
         public Command SettingsCmd { get; set; }
@@ -15,13 +13,11 @@ namespace TicTacToe.ViewModels
         /// <summary>
         /// Initializes a new instance of the MainMenuViewModel class.
         /// </summary>
-        public MainMenuViewModel(INavigationService navigationService)
+        public MainMenuViewModel()
         {
-            _navigationService = navigationService;
-
             SingleplayerCmd = new Command(CreateSingleplayer);
             MultiplayerCmd = new Command(CreateMultiplayer);
-            SettingsCmd = new Command(CreateSettings);
+            SettingsCmd = new Command(() => { App.Locator.NavigationService.NavigateTo(Locator.SettingsMenu); });
         }
 
         /// <summary>
@@ -46,11 +42,13 @@ namespace TicTacToe.ViewModels
         }
 
         #region INotifyPropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         #endregion
     }
 }
