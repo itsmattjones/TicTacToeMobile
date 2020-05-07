@@ -11,24 +11,16 @@ namespace TicTacToe.Services
         public List<IBoardCell> Board { get; }
         public List<IPlayer> Players { get; }
 
-        public GameEngine(GameType gameType, int boardSize)
+        public GameEngine()
         {
-            if (boardSize % 9 != 0 || boardSize == 0)
-                throw new ArgumentException("The board size must be an equal grid.");
-
-            for (var i = 0; i < boardSize; i++)
+            Board = new List<IBoardCell>();
+            for (var i = 0; i < 9; i++)
                 Board.Add(new BoardCell());
 
+            Players = new List<IPlayer>();
+            GameType = GameType.Singleplayer;
             Players.Add(new Player { PlayerId = 1, IsPlayerTurn = true, PlayerAvatar = 1 });
-            Players.Add(new AIPlayer { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2, Difficulty = AiDifficulty.Medium });
-
-            if (gameType == GameType.Singleplayer)
-            {
-                Players[1].PlayerType = PlayerType.Ai;
-                Players[1].Difficulty = AiDifficulty.Medium;
-            }
-
-            GameType = gameType;
+            Players.Add(new Player { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2, PlayerType = PlayerType.Ai, Difficulty = AiDifficulty.Medium });
         }
 
         public EngineTickResult TickPlayerTurn(int chosenCell)

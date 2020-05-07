@@ -7,10 +7,9 @@ using Xamarin.Forms;
 
 namespace TicTacToe.ViewModels
 {
-    public class GameScreenViewModel : INotifyPropertyChanged
+    public class GameScreenViewModel : IGameScreenViewModel, INotifyPropertyChanged
     {
         private IGameEngine _gameEngine;
-        private INavigationService _navigationService;
 
         private bool _boardButtonsEnabled;
         private bool _isGameWon;
@@ -66,9 +65,8 @@ namespace TicTacToe.ViewModels
             }
         }
 
-        public GameScreenViewModel(INavigationService navigationService, IGameEngine gameEngine)
+        public GameScreenViewModel(IGameEngine gameEngine)
         {
-            _navigationService = navigationService;
             _gameEngine = gameEngine;
 
             SelectCellCommand = new Command<string>(SelectCell);
@@ -110,7 +108,6 @@ namespace TicTacToe.ViewModels
 
         private void OpenMainMenu()
         {
-            _navigationService.GoBack();
         }
 
         private void PlayAgain()

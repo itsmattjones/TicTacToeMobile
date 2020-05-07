@@ -2,21 +2,142 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Views;
 using Xamarin.Forms;
 
 namespace TicTacToe.Services
 {
+    // Based on: https://mallibone.com/post/xamarin.forms-navigation-with-mvvm-light
     public class NavigationService : INavigationService
     {
-        private readonly object _sync = new object();
         private readonly Dictionary<string, Type> _pagesByKey = new Dictionary<string, Type>();
-        private readonly Stack<NavigationPage> _navigationPageStack = new Stack<NavigationPage>();
-        private NavigationPage CurrentNavigationPage => _navigationPageStack.Peek();
+        private NavigationPage _navigation;
+
+        public void Initialize(NavigationPage navigationPage)
+        {
+            _navigation = navigationPage;
+        }
+
+        public string CurrentPageKey
+        {
+            get
+            {
+                lock (_pagesByKey)
+                {
+                    if (_navigation.CurrentPage == null)
+                        return null;
+
+                    var pageType = _navigation.CurrentPage.GetType();
+                    return _pagesByKey.ContainsValue(pageType) ? _pagesByKey.First(p => p.Value == pageType).Key : null;
+                }
+            }
+        }
+
+        public void GoBack()
+        {
+            if (CanGoBack())
+                _navigation.PopAsync();
+        }
+
+        public bool CanGoBack()
+        {
+            return _navigation?.Navigation?.NavigationStack?.Count > 1;
+        }
+
+        public void NavigateTo(string pageKey)
+        {
+            NavigateTo(pageKey, null);
+        }
+
+        // Required for interface
+        public void NavigateTo(string pageKey, object parameter)
+        {
+            NavigateTo(pageKey, parameter, null, null, null, null, null, false);
+        }
+
+        // Two or more parameters
+        public void NavigateTo(string pageKey, object parameter1, object parameter2, object parameter3 = null,
+                               object parameter4 = null, object parameter5 = null, object parameter6 = null)
+        {
+            NavigateTo(pageKey, parameter1, parameter2, parameter3, parameter4, parameter5, parameter6, false);
+        }
+
+        private void NavigateTo(string pageKey, object parameter1, object parameter2, object parameter3,
+                                object parameter4, object parameter5, object parameter6, bool replaceRoot)
+        {
+            lock (_pagesByKey)
+            {
+                if (_pagesByKey.ContainsKey(pageKey))
+                {
+                    var type = _pagesByKey[pageKey];
+                    ConstructorInfo constructor;
+                    List<object> p = new List<object>();
+
+                    if (parameter1 != null)
+                        p.Add(parameter1);
+                    if (parameter2 != null)
+                        p.Add(parameter2);
+                    if (parameter3 != null)
+                        p.Add(parameter3);
+                    if (parameter4 != null)
+                        p.Add(parameter4);
+                    if (parameter5 != null)
+                        p.Add(parameter5);
+                    if (parameter6 != null)
+                        p.Add(parameter6);
+
+                    object[] parameters = p.ToArray();
+                    constructor = GetConstructor(type, parameters);
+                    if (constructor == null)
+                    {
+                        var exceptionMessage = $"No suitable constructor found for page {pageKey}";
+                        throw new InvalidOperationException(exceptionMessage);
+                    }
+
+                    if (!replaceRoot)
+                    {
+                        var page = constructor.Invoke(parameters) as Page;
+                        _navigation.PushAsync(page, false);
+                    }
+                    else
+                    {
+                        var page = constructor.Invoke(parameters) as Page;
+                        var root = _navigation.Navigation.NavigationStack.First();
+                        _navigation.Navigation.InsertPageBefore(page, root);
+                        _navigation.PopToRootAsync(false);
+                    }
+                }
+                else
+                {
+                    var exceptionMessage = $"No such page: {pageKey}. Did you forget to call NavigationService.Configure?";
+                    throw new ArgumentException(exceptionMessage, nameof(pageKey));
+                }
+            }
+        }
+
+        private ConstructorInfo GetConstructor(Type type, object[] parameters)
+        {
+            var parameterCount = parameters.Length;
+            ConstructorInfo constructor;
+            if (parameterCount > 0)
+            {
+                constructor = type.GetTypeInfo().DeclaredConstructors.SingleOrDefault(
+                c => {
+                    var p = c.GetParameters();
+                    return p.Count() == parameterCount && p[parameterCount - 1].ParameterType == parameters[parameterCount - 1].GetType();
+                });
+            }
+            else
+            {
+                constructor = type.GetTypeInfo().DeclaredConstructors.FirstOrDefault(c => !c.GetParameters().Any());
+            }
+
+            return constructor;
+        }
 
         public void Configure(string pageKey, Type pageType)
         {
-            lock (_sync)
+            lock (_pagesByKey)
             {
                 if (_pagesByKey.ContainsKey(pageKey))
                     _pagesByKey[pageKey] = pageType;
@@ -25,112 +146,9 @@ namespace TicTacToe.Services
             }
         }
 
-        public Page SetRootPage(string rootPageKey)
+        public void SetNewRoot(string pageKey)
         {
-            var rootPage = GetPage(rootPageKey);
-            _navigationPageStack.Clear();
-            var mainPage = new NavigationPage(rootPage);
-            _navigationPageStack.Push(mainPage);
-            return mainPage;
-        }
-
-        public string CurrentPageKey
-        {
-            get
-            {
-                lock (_sync)
-                {
-                    if (CurrentNavigationPage?.CurrentPage == null)
-                        return null;
-
-                    var pageType = CurrentNavigationPage.CurrentPage.GetType();
-                    return _pagesByKey.ContainsValue(pageType) ? _pagesByKey.First(p => p.Value == pageType).Key : null;
-                }
-            }
-        }
-
-        public async Task GoBack()
-        {
-            var navigationStack = CurrentNavigationPage.Navigation;
-            if (navigationStack.NavigationStack.Count > 1)
-            {
-                await CurrentNavigationPage.PopAsync();
-                return;
-            }
-
-            if (_navigationPageStack.Count > 1)
-            {
-                _navigationPageStack.Pop();
-                await CurrentNavigationPage.Navigation.PopModalAsync();
-                return;
-            }
-
-            await CurrentNavigationPage.PopAsync();
-        }
-
-        public async Task NavigateModalAsync(string pageKey, bool animated = true)
-        {
-            await NavigateModalAsync(pageKey, null, animated);
-        }
-
-        public async Task NavigateModalAsync(string pageKey, object parameter, bool animated = true)
-        {
-            var page = GetPage(pageKey, parameter);
-            NavigationPage.SetHasNavigationBar(page, false);
-            var modalNavigationPage = new NavigationPage(page);
-            await CurrentNavigationPage.Navigation.PushModalAsync(modalNavigationPage, animated);
-            _navigationPageStack.Push(modalNavigationPage);
-        }
-
-        public async Task NavigateAsync(string pageKey, bool animated = true)
-        {
-            await NavigateAsync(pageKey, null, animated);
-        }
-
-        public async Task NavigateAsync(string pageKey, object parameter, bool animated = true)
-        {
-            var page = GetPage(pageKey, parameter);
-            await CurrentNavigationPage.Navigation.PushAsync(page, animated);
-        }
-
-        private Page GetPage(string pageKey, object parameter = null)
-        {
-
-            lock (_sync)
-            {
-                if (!_pagesByKey.ContainsKey(pageKey))
-                    throw new ArgumentException($"No such page: {pageKey}. Did you forget to call NavigationService.Configure?");
-
-                var type = _pagesByKey[pageKey];
-                ConstructorInfo constructor;
-                object[] parameters;
-
-                if (parameter == null)
-                {
-                    constructor = type.GetTypeInfo().DeclaredConstructors.FirstOrDefault(c => !c.GetParameters().Any());
-                    parameters = new object[]{};
-                }
-                else
-                {
-                    constructor = type.GetTypeInfo().DeclaredConstructors.FirstOrDefault(
-                    c =>
-                    {
-                        var p = c.GetParameters();
-                        return p.Length == 1 && p[0].ParameterType == parameter.GetType();
-                    });
-
-                    parameters = new[]
-                    {
-                        parameter
-                    };
-                }
-
-                if (constructor == null)
-                    throw new InvalidOperationException("No suitable constructor found for page " + pageKey);
-
-                var page = constructor.Invoke(parameters) as Page;
-                return page;
-            }
+            NavigateTo(pageKey, null, null, null, null, null, null, replaceRoot: true);
         }
     }
 }

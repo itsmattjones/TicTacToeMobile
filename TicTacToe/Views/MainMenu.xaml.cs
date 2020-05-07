@@ -5,9 +5,9 @@ namespace TicTacToe.Views
 {
     public partial class MainMenu : ContentPage
     {
-        public MainMenu(MainMenuViewModel mainMenuViewModel)
+        public MainMenu()
         {
-            BindingContext = mainMenuViewModel;
+            BindingContext = App.Locator.MainMenuViewModel;
             InitializeComponent();
         }
     }

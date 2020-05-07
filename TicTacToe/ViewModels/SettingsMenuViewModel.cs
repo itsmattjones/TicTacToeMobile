@@ -4,22 +4,13 @@ using Xamarin.Forms;
 
 namespace TicTacToe.ViewModels
 {
-    public class SettingsMenuViewModel : INotifyPropertyChanged
+    public class SettingsMenuViewModel : ISettingsMenuViewModel, INotifyPropertyChanged
     {
-        private AiDifficulty _chosenDifficulty;
-
         public Command ChangeDifficultyCommand { get; set; }
         public Command MainMenuCommand { get; set; }
 
-        public AiDifficulty ChosenDifficulty
-        {
-            get => _chosenDifficulty;
-            set
-            {
-                _chosenDifficulty = value;
-                NotifyPropertyChanged("ChosenDifficulty");
-            }
-        }
+        public AiDifficulty ChosenDifficulty { get; set; }
+        public string NavigationPath { get; }
 
         public SettingsMenuViewModel()
         {
@@ -36,11 +27,13 @@ namespace TicTacToe.ViewModels
         }
 
         #region INotifyPropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         #endregion
     }
 }
