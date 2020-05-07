@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Models;
 
-namespace TicTacToe.Services
+namespace TicTacToe.Infrastructure
 {
     public class GameEngine : IGameEngine
     {
@@ -11,16 +11,20 @@ namespace TicTacToe.Services
         public List<IBoardCell> Board { get; }
         public List<IPlayer> Players { get; }
 
-        public GameEngine()
+        public GameEngine(GameType gameType, int boardSize = 9)
         {
             Board = new List<IBoardCell>();
-            for (var i = 0; i < 9; i++)
+            for (var i = 0; i < boardSize; i++)
                 Board.Add(new BoardCell());
 
             Players = new List<IPlayer>();
-            GameType = GameType.Singleplayer;
             Players.Add(new Player { PlayerId = 1, IsPlayerTurn = true, PlayerAvatar = 1 });
             Players.Add(new Player { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2, PlayerType = PlayerType.Ai, Difficulty = AiDifficulty.Medium });
+
+            if (gameType == GameType.Multiplayer)
+                Players[1].PlayerType = PlayerType.Normal;
+
+            GameType = gameType;
         }
 
         public EngineTickResult TickPlayerTurn(int chosenCell)
