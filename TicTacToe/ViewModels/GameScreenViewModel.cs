@@ -1,15 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+using TicTacToe.Infrastructure;
+using TicTacToe.Infrastructure.Enums;
+using TicTacToe.Infrastructure.Services;
 using TicTacToe.Models;
-using TicTacToe.Services;
 using Xamarin.Forms;
 
 namespace TicTacToe.ViewModels
 {
-    public class GameScreenViewModel : IGameScreenViewModel, INotifyPropertyChanged
+    public class GameScreenViewModel : ViewModelBase
     {
         private IGameEngine _gameEngine;
+        private readonly INavigationService _navigationService;
 
         private bool _boardButtonsEnabled;
         private bool _isGameWon;
@@ -31,7 +35,7 @@ namespace TicTacToe.ViewModels
             set 
             {
                 _isGameWon = value;
-                NotifyPropertyChanged("IsGameWon");
+                RaisePropertyChanged();
             }
         }
 
@@ -41,7 +45,7 @@ namespace TicTacToe.ViewModels
             set
             {
                 _isGameDraw = value;
-                NotifyPropertyChanged("IsGameDraw");
+                RaisePropertyChanged();
             }
         }
 
@@ -51,7 +55,7 @@ namespace TicTacToe.ViewModels
             set
             {
                 _boardButtonsEnabled = value;
-                NotifyPropertyChanged("BoardButtonsEnabled");
+                RaisePropertyChanged();
             }
         }
         
@@ -61,19 +65,20 @@ namespace TicTacToe.ViewModels
             set
             {
                 _gameWinner = value;
-                NotifyPropertyChanged("GameWinner");
+                RaisePropertyChanged();
             }
         }
 
-        public GameScreenViewModel(IGameEngine gameEngine)
+        public GameScreenViewModel(INavigationService navigationService)
         {
-            _gameEngine = gameEngine;
-
             SelectCellCommand = new Command<string>(SelectCell);
             MainMenuCommand = new Command(OpenMainMenu);
             PlayAgainCommand = new Command(PlayAgain);
 
+            _navigationService = navigationService;
             BoardButtonsEnabled = true;
+            
+            Messenger.Default.Register<IGameEngine>(this, engine => _gameEngine = engine);
         }
 
         private void SelectCell(string cellId)
@@ -81,7 +86,9 @@ namespace TicTacToe.ViewModels
             if (!int.TryParse(cellId, out var cell) || cellId == string.Empty)
                 return;
 
+            // Try to select the cell
             var tickResult = _gameEngine.TickPlayerTurn(cell);
+            RaisePropertyChanged(nameof(Board));
 
             // If game is finished end.
             UpdateGameStatus(tickResult);
@@ -90,7 +97,11 @@ namespace TicTacToe.ViewModels
 
             // If the games multiplayer, make AI players take their turns.
             while (_gameEngine.Players.Where(m => m.IsPlayerTurn == true).FirstOrDefault().PlayerType == PlayerType.Ai)
-                UpdateGameStatus(_gameEngine.TickAIPlayerTurn());
+            {
+                var result = _gameEngine.TickAIPlayerTurn();
+                RaisePropertyChanged(nameof(Board));
+                UpdateGameStatus(result);
+	        }
         }
 
         private void UpdateGameStatus(EngineTickResult engineTick)
@@ -108,20 +119,30 @@ namespace TicTacToe.ViewModels
 
         private void OpenMainMenu()
         {
+            _navigationService.GoBack();
+
+            var newGameEngine = _gameEngine.GameType == GameType.Singleplayer ?
+                new GameEngine(GameType.Singleplayer) : new GameEngine(GameType.Multiplayer);
+
+            _gameEngine = newGameEngine;
+            RaisePropertyChanged(nameof(Board));
+
+            IsGameWon = false;
+            IsGameDraw = false;
+            BoardButtonsEnabled = true;
         }
 
         private void PlayAgain()
         {
+            var newGameEngine = _gameEngine.GameType == GameType.Singleplayer ? 
+		        new GameEngine(GameType.Singleplayer) : new GameEngine(GameType.Multiplayer);
+
+            _gameEngine = newGameEngine;
+            RaisePropertyChanged(nameof(Board));
+
+            IsGameWon = false;
+            IsGameDraw = false;
+            BoardButtonsEnabled = true;
         }
-
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }

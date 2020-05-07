@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TicTacToe.Models;
 
-namespace TicTacToe.Services
+namespace TicTacToe.Infrastructure
 {
     public struct GameResults
     {
