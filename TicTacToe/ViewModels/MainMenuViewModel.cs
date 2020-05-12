@@ -24,7 +24,7 @@ namespace TicTacToe.ViewModels
             SettingsCmd = new Command(OpenSettings);
         }
 
-        private async void CreateSingleplayer() 
+        private void CreateSingleplayer() 
         {
             var settings = new EngineSettings()
             {
@@ -52,7 +52,7 @@ namespace TicTacToe.ViewModels
             _navigationService.NavigateTo(AppPages.GameScreenPage);
         }
 
-        private async void OpenSettings() 
+        private void OpenSettings() 
         {
             _navigationService.NavigateTo(AppPages.SettingsMenuPage);
         }
