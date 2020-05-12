@@ -119,15 +119,8 @@ namespace TicTacToe.ViewModels
         {
             _navigationService.GoBack();
 
-            var settings = new EngineSettings()
-            {
-                Difficulty = _gameEngine.AiDifficulty,
-                Player1AvatarId = Preferences.Get("Player1AvatarId", 1),
-                Player2AvatarId = Preferences.Get("Player2AvatarId", 3)
-            };
-            settings.GameType = _gameEngine.GameType == GameType.Singleplayer ? 
-		        GameType.Singleplayer : GameType.Multiplayer;
-		  
+            var settings = new EngineSettings() { Difficulty = _gameEngine.AiDifficulty, Player1AvatarId = 1, Player2AvatarId = 3 };
+            settings.GameType = _gameEngine.GameType == GameType.Singleplayer ? GameType.Singleplayer : GameType.Multiplayer;
             IGameEngine newGameEngine = new GameEngine(settings);
 
             _gameEngine = newGameEngine;
@@ -139,16 +132,10 @@ namespace TicTacToe.ViewModels
 
         private void PlayAgain()
         {
-            var settings = new EngineSettings()
-            {
-                Difficulty = _gameEngine.AiDifficulty,
-                Player1AvatarId = Preferences.Get("Player1AvatarId", 1),
-                Player2AvatarId = Preferences.Get("Player2AvatarId", 3)
-            };
-            settings.GameType = _gameEngine.GameType == GameType.Singleplayer ?
-                GameType.Singleplayer : GameType.Multiplayer;
-
-            IGameEngine newGameEngine = new GameEngine(settings); ;
+            var settings = new EngineSettings() { Difficulty = _gameEngine.AiDifficulty, 
+		        Player1AvatarId = _gameEngine.Players[0].PlayerAvatar, Player2AvatarId = _gameEngine.Players[1].PlayerAvatar };
+            settings.GameType = _gameEngine.GameType == GameType.Singleplayer ? GameType.Singleplayer : GameType.Multiplayer;
+            IGameEngine newGameEngine = new GameEngine(settings);
 
             _gameEngine = newGameEngine;
             RaisePropertyChanged(nameof(Board));
