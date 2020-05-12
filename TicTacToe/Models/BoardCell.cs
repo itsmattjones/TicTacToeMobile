@@ -1,12 +1,15 @@
 ﻿namespace TicTacToe.Models
 {
-    public class BoardCell : IBoardCell
+    public enum CellState
     {
-        /// <summary>
-        /// Gets or sets the state of the cell.
-        /// </summary>
-        /// <value>The state of the cell.</value>
-        public CellState State { get; set; }
+        Available,
+        TakenByPlayer1,
+        TakenByPlayer2
+    }
 
+    public class BoardCell
+    {
+        public CellState State { get; set; }
+        public IPlayer Owner { get; set; }
     }
 }

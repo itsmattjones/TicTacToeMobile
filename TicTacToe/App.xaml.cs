@@ -34,8 +34,8 @@ namespace TicTacToe
 
                 // Configure pages:
                 navigationService.Configure(AppPages.MainMenuPage, typeof(MainMenu));
-                navigationService.Configure(AppPages.SettingsMenuPage, typeof(SettingsMenu));
                 navigationService.Configure(AppPages.GameScreenPage, typeof(GameScreen));
+                navigationService.Configure(AppPages.SettingsMenuPage, typeof(SettingsMenu));
 
                 // Register NavigationService in IoC container:
                 SimpleIoc.Default.Register<INavigationService>(() => navigationService);

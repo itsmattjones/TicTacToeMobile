@@ -26,14 +26,28 @@ namespace TicTacToe.ViewModels
 
         private async void CreateSingleplayer() 
         {
-            IGameEngine gameEngine = new GameEngine(GameType.Singleplayer, GetAiDifficulty());
+            var settings = new EngineSettings()
+            {
+                GameType = GameType.Singleplayer,
+                Difficulty = GetAiDifficulty(),
+                Player1AvatarId = Preferences.Get("Player1AvatarId", 1),
+                Player2AvatarId = Preferences.Get("Player2AvatarId", 3)
+            };
+            IGameEngine gameEngine = new GameEngine(settings);
             Messenger.Default.Send(gameEngine);
             _navigationService.NavigateTo(AppPages.GameScreenPage);
         }
 
         private void CreateMultiplayer() 
-        { 
-            IGameEngine gameEngine = new GameEngine(GameType.Multiplayer, GetAiDifficulty());
+        {
+            var settings = new EngineSettings()
+            {
+                GameType = GameType.Multiplayer,
+                Difficulty = GetAiDifficulty(),
+                Player1AvatarId = Preferences.Get("Player1AvatarId", 1),
+                Player2AvatarId = Preferences.Get("Player2AvatarId", 3)
+            };
+            IGameEngine gameEngine = new GameEngine(settings); ;
             Messenger.Default.Send(gameEngine);
             _navigationService.NavigateTo(AppPages.GameScreenPage);
         }

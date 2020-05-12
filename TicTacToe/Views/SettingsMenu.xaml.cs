@@ -1,4 +1,5 @@
-﻿using TicTacToe.ViewModels;
+﻿using TicTacToe.Infrastructure.Services;
+using TicTacToe.ViewModels;
 using Xamarin.Forms;
 
 namespace TicTacToe.Views

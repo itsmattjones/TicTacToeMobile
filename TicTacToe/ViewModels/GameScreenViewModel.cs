@@ -3,9 +3,9 @@ using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using TicTacToe.Infrastructure;
-using TicTacToe.Infrastructure.Enums;
 using TicTacToe.Infrastructure.Services;
 using TicTacToe.Models;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace TicTacToe.ViewModels
@@ -15,7 +15,6 @@ namespace TicTacToe.ViewModels
         private IGameEngine _gameEngine;
         private readonly INavigationService _navigationService;
 
-        private bool _boardButtonsEnabled;
         private bool _isGameWon;
         private bool _isGameDraw;
         private int _gameWinner;
@@ -24,7 +23,7 @@ namespace TicTacToe.ViewModels
         public Command PlayAgainCommand { get; set; }
         public Command MainMenuCommand { get; set; }
 
-        public List<IBoardCell> Board
+        public List<BoardCell> Board
         {
             get => _gameEngine.Board;
         }
@@ -36,6 +35,7 @@ namespace TicTacToe.ViewModels
             {
                 _isGameWon = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(BoardButtonsEnabled));
             }
         }
 
@@ -46,17 +46,13 @@ namespace TicTacToe.ViewModels
             {
                 _isGameDraw = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(BoardButtonsEnabled));
             }
         }
 
         public bool BoardButtonsEnabled
         {
-            get => _boardButtonsEnabled;
-            set
-            {
-                _boardButtonsEnabled = value;
-                RaisePropertyChanged();
-            }
+            get => (!_isGameWon && !_isGameDraw);
         }
         
         public int GameWinner
@@ -69,6 +65,11 @@ namespace TicTacToe.ViewModels
             }
         }
 
+        public int CurrentTurnPlayerId
+        {
+            get { return _gameEngine.Players.Where(p => p.IsPlayerTurn == true).First().PlayerId; }
+        }
+
         public GameScreenViewModel(INavigationService navigationService)
         {
             SelectCellCommand = new Command<string>(SelectCell);
@@ -76,7 +77,6 @@ namespace TicTacToe.ViewModels
             PlayAgainCommand = new Command(PlayAgain);
 
             _navigationService = navigationService;
-            BoardButtonsEnabled = true;
             
             Messenger.Default.Register<IGameEngine>(this, engine => _gameEngine = engine);
         }
@@ -96,7 +96,7 @@ namespace TicTacToe.ViewModels
                 return;
 
             // If the games multiplayer, make AI players take their turns.
-            while (_gameEngine.Players.Where(m => m.IsPlayerTurn == true).FirstOrDefault().PlayerType == PlayerType.Ai)
+            if (_gameEngine.Players.Where(m => m.IsPlayerTurn == true).FirstOrDefault().PlayerType == PlayerType.Ai)
             {
                 var result = _gameEngine.TickAIPlayerTurn();
                 RaisePropertyChanged(nameof(Board));
@@ -113,38 +113,48 @@ namespace TicTacToe.ViewModels
             }
             else if(engineTick.GameFinished && !engineTick.Results.GameHasWinner)
                 IsGameDraw = true;
-
-            BoardButtonsEnabled = !(IsGameWon || IsGameDraw);
         }
 
         private void OpenMainMenu()
         {
             _navigationService.GoBack();
 
-            var newGameEngine = _gameEngine.GameType == GameType.Singleplayer ?
-                new GameEngine(GameType.Singleplayer, _gameEngine.AiDifficulty) : 
-	        	new GameEngine(GameType.Multiplayer, _gameEngine.AiDifficulty);
+            var settings = new EngineSettings()
+            {
+                Difficulty = _gameEngine.AiDifficulty,
+                Player1AvatarId = Preferences.Get("Player1AvatarId", 1),
+                Player2AvatarId = Preferences.Get("Player2AvatarId", 3)
+            };
+            settings.GameType = _gameEngine.GameType == GameType.Singleplayer ? 
+		        GameType.Singleplayer : GameType.Multiplayer;
+		  
+            IGameEngine newGameEngine = new GameEngine(settings);
 
             _gameEngine = newGameEngine;
             RaisePropertyChanged(nameof(Board));
 
             IsGameWon = false;
             IsGameDraw = false;
-            BoardButtonsEnabled = true;
         }
 
         private void PlayAgain()
         {
-            var newGameEngine = _gameEngine.GameType == GameType.Singleplayer ? 
-		        new GameEngine(GameType.Singleplayer, _gameEngine.AiDifficulty) : 
-		        new GameEngine(GameType.Multiplayer, _gameEngine.AiDifficulty);
+            var settings = new EngineSettings()
+            {
+                Difficulty = _gameEngine.AiDifficulty,
+                Player1AvatarId = Preferences.Get("Player1AvatarId", 1),
+                Player2AvatarId = Preferences.Get("Player2AvatarId", 3)
+            };
+            settings.GameType = _gameEngine.GameType == GameType.Singleplayer ?
+                GameType.Singleplayer : GameType.Multiplayer;
+
+            IGameEngine newGameEngine = new GameEngine(settings); ;
 
             _gameEngine = newGameEngine;
             RaisePropertyChanged(nameof(Board));
 
             IsGameWon = false;
             IsGameDraw = false;
-            BoardButtonsEnabled = true;
         }
     }
 }

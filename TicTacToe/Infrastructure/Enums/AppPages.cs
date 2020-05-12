@@ -1,4 +1,4 @@
 ﻿namespace TicTacToe.Infrastructure.Enums
 {
-    public enum AppPages { MainMenuPage, SettingsMenuPage, GameScreenPage }
+    public enum AppPages { MainMenuPage, GameScreenPage, SettingsMenuPage }
 }

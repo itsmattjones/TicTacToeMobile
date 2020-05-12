@@ -61,9 +61,6 @@
     <PackageReference Include="CommonServiceLocator">
       <Version>2.0.5</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Essentials">
-      <Version>1.5.3.1</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -92,10 +89,15 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
-    <AndroidResource Include="Resources\drawable\tictactoe.png" />
     <AndroidResource Include="Resources\drawable\winner.png" />
     <AndroidResource Include="Resources\drawable\draw.png" />
     <AndroidResource Include="Resources\drawable\loser.png" />
+    <AndroidResource Include="Resources\drawable\avatar_p1_0.png" />
+    <AndroidResource Include="Resources\drawable\avatar_p1_burger.png" />
+    <AndroidResource Include="Resources\drawable\avatar_p2_hotdog.png" />
+    <AndroidResource Include="Resources\drawable\avatar_p2_x.png" />
+    <AndroidResource Include="Resources\drawable\avatar_blank.png" />
+    <AndroidResource Include="Resources\drawable\logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
