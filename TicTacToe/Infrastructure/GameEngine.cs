@@ -8,25 +8,27 @@ namespace TicTacToe.Infrastructure
     public class GameEngine : IGameEngine
     {
         public GameType GameType { get; }
-        public List<IBoardCell> Board { get; }
+        public List<BoardCell> Board { get; }
         public List<IPlayer> Players { get; }
         public AiDifficulty AiDifficulty { get; }
 
-        public GameEngine(GameType gameType, AiDifficulty difficulty, int boardSize = 9)
+        public GameEngine(EngineSettings settings)
         {
-            Board = new List<IBoardCell>();
-            for (var i = 0; i < boardSize; i++)
+            Board = new List<BoardCell>();
+            for (var i = 0; i < 9; i++)
                 Board.Add(new BoardCell());
 
-            Players = new List<IPlayer>();
-            Players.Add(new Player { PlayerId = 1, IsPlayerTurn = true, PlayerAvatar = 1 });
-            Players.Add(new Player { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = 2 });
+            Players = new List<IPlayer>
+            {
+                new Player { PlayerId = 1, IsPlayerTurn = true, PlayerAvatar = settings.Player1AvatarId },
+                new Player { PlayerId = 2, IsPlayerTurn = false, PlayerAvatar = settings.Player2AvatarId }
+            };
 
-            if (gameType == GameType.Singleplayer)
+            if (settings.GameType == GameType.Singleplayer)
                 Players[1].PlayerType = PlayerType.Ai;
 
-            GameType = gameType;
-            AiDifficulty = difficulty;
+            GameType = settings.GameType;
+            AiDifficulty = settings.Difficulty;
         }
 
         public EngineTickResult TickPlayerTurn(int chosenCell)
@@ -61,7 +63,7 @@ namespace TicTacToe.Infrastructure
             return DoTurn(aiPlayer, cell);
         }
 
-        private int EasyAiTurn(List<IBoardCell> gameBoard)
+        private int EasyAiTurn(List<BoardCell> gameBoard)
         {
             foreach (var cell in gameBoard)
             {
@@ -71,7 +73,7 @@ namespace TicTacToe.Infrastructure
             return -1;
         }
 
-        private int MediumAiTurn(List<IBoardCell> gameBoard, IPlayer player)
+        private int MediumAiTurn(List<BoardCell> gameBoard, IPlayer player)
         {
             var cellsToSearch = player.PlayerId == 1 ? CellState.TakenByPlayer2 : CellState.TakenByPlayer1;
             var solutions = GetPopulatedWinningCombinations(gameBoard, cellsToSearch);
@@ -119,7 +121,7 @@ namespace TicTacToe.Infrastructure
         /// </summary>
         /// <returns>The chosen cell to select.</returns>
         /// <param name="gameModel">Game model.</param>
-        private int HardAiTurn(List<IBoardCell> gameBoard, IPlayer player)
+        private int HardAiTurn(List<BoardCell> gameBoard, IPlayer player)
         {
             var cellsToSearch = player.PlayerId == 1 ? CellState.TakenByPlayer1 : CellState.TakenByPlayer2;
             var solutions = GetPopulatedWinningCombinations(gameBoard, cellsToSearch);
@@ -153,6 +155,7 @@ namespace TicTacToe.Infrastructure
 
             // Select cell
             Board[cell].State = player.PlayerId == 1 ? CellState.TakenByPlayer1 : CellState.TakenByPlayer2;
+            Board[cell].Owner = player;
             player.TurnsTaken++;
 
             // Check for game win or draw
@@ -196,7 +199,7 @@ namespace TicTacToe.Infrastructure
             throw new Exception("Cannot find the player whose turn it is.");
         }
 
-        private bool GameIsWon(List<IBoardCell> board, IPlayer player)
+        private bool GameIsWon(List<BoardCell> board, IPlayer player)
         {
             var cellStateToFind = player.PlayerId == 1 ? CellState.TakenByPlayer1 : CellState.TakenByPlayer2;
 
@@ -217,7 +220,7 @@ namespace TicTacToe.Infrastructure
             return false;
         }
 
-        private bool GameIsDraw(List<IBoardCell> board)
+        private bool GameIsDraw(List<BoardCell> board)
         {
             foreach (var cell in board)
             {
@@ -238,7 +241,7 @@ namespace TicTacToe.Infrastructure
             };
         }
 
-        private List<List<int>> GetPopulatedWinningCombinations(List<IBoardCell> gameBoard, CellState cellState)
+        private List<List<int>> GetPopulatedWinningCombinations(List<BoardCell> gameBoard, CellState cellState)
         {
             var solutions = GenerateWinningCombinationsList();
             foreach (var solution in solutions)
