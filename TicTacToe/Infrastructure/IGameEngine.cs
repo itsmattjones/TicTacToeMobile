@@ -3,6 +3,15 @@ using TicTacToe.Models;
 
 namespace TicTacToe.Infrastructure
 {
+    public struct EngineSettings
+    {
+        public GameType GameType;
+        public AiDifficulty Difficulty;
+        public int Player1AvatarId;
+        public int Player2AvatarId;
+        public int BoardSize;
+    }
+
     public struct GameResults
     {
         public bool GameHasWinner;
@@ -18,9 +27,9 @@ namespace TicTacToe.Infrastructure
 
     public enum AiDifficulty
     {
-        Easy,
-        Medium,
-        Hard
+        Easy = 0,
+        Medium = 1,
+        Hard = 2
     }
 
     public enum GameType
@@ -32,7 +41,7 @@ namespace TicTacToe.Infrastructure
     public interface IGameEngine
     {
         GameType GameType { get; }
-        List<IBoardCell> Board { get; }
+        List<BoardCell> Board { get; }
         List<IPlayer> Players { get; }
         AiDifficulty AiDifficulty { get; }
 

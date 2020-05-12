@@ -150,11 +150,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.726" />
+    <PackageReference Include="MvvmLightLibs">
+      <Version>5.4.1.1</Version>
+    </PackageReference>
     <PackageReference Include="CommonServiceLocator">
       <Version>2.0.5</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.Essentials">
-      <Version>1.5.3.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
@@ -165,9 +165,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\tictactoe.png" />
     <BundleResource Include="Resources\draw.png" />
     <BundleResource Include="Resources\loser.png" />
     <BundleResource Include="Resources\winner.png" />
+    <BundleResource Include="Resources\avatar_p1_0.png" />
+    <BundleResource Include="Resources\avatar_p1_burger.png" />
+    <BundleResource Include="Resources\avatar_p2_hotdog.png" />
+    <BundleResource Include="Resources\avatar_p2_x.png" />
+    <BundleResource Include="Resources\avatar_blank.png" />
+    <BundleResource Include="Resources\logo.png" />
   </ItemGroup>
 </Project>
