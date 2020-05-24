@@ -157,7 +157,6 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.ColumnSpan="2" Text="Select Avatar" Style="{StaticResource DialogText}"/>
                     <Image Grid.Row="1" Grid.Column="0" Source="avatar_p1_0.png"/>
                     <Button Grid.Row="1" Grid.Column="0" BackgroundColor="Transparent" Command="{Binding SelectAvatarCommand}" CommandParameter="1;1"/>
                     <Image Grid.Row="1" Grid.Column="1" Source="avatar_p1_burger.png"/>
@@ -178,7 +177,6 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.ColumnSpan="2" Text="Select Avatar" Style="{StaticResource DialogText}"/>
                     <Image Grid.Row="1" Grid.Column="0" Source="avatar_p2_x.png"/>
                     <Button Grid.Row="1" Grid.Column="0" BackgroundColor="Transparent" Command="{Binding SelectAvatarCommand}" CommandParameter="2;2"/>
                     <Image Grid.Row="1" Grid.Column="1" Source="avatar_p2_hotdog.png"/>

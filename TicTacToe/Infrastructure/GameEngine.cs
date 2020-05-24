@@ -150,7 +150,10 @@ namespace TicTacToe.Infrastructure
 
         private EngineTickResult DoTurn(IPlayer player, int cell)
         {
-            if (cell == -1 || Board[cell].State != CellState.Available)
+            if (cell < 0 || cell > Board.Count() - 1)
+                return new EngineTickResult() { SuccessfulTick = false };
+
+            if (Board[cell].State != CellState.Available)
                 return new EngineTickResult() { SuccessfulTick = false };
 
             // Select cell
