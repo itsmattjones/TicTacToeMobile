@@ -1,7 +1,7 @@
 # TicTacToeMobile
 
 ## Summary
-This is a expanded cross-platform mobile version of the TicTacToe game found here: https://github.com/MattOnCode/TicTacToe. It includes both singleplayer modes with seperate difficulties, and multiplayer modes for local co-op.
+This is a expanded cross-platform mobile version of the TicTacToe game found here: https://github.com/MattJonesDev/TicTacToe. It includes both singleplayer modes with seperate difficulties, and multiplayer modes for local co-op.
 
 The application is built on the concept of MvvM (Model-View-ViewModel), with the core of the code held in the TicTacToe project and the appropriate resources for each mobile platform held in their respective projects (TicTacToe.Android / TicTacToe.IOS).
 
